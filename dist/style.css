@@ -1,0 +1,51 @@
+
+body {
+    margin: 5px;
+}
+
+textarea {
+    resize: none;
+    display: block;
+}
+
+.flexRowCenter {
+    display: flex;
+    justify-content: center;
+}
+
+.flexColumnCenter {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+}
+
+.post {
+    margin: 10px;
+    padding: 10px;
+    border: solid 1px darkgrey;
+    border-radius: 3px;
+}
+
+#joinContainer {
+    width: 400px;
+    display: grid;
+    grid-template: auto / auto auto;
+    grid-gap: 5px;
+    margin: 0 auto;
+}
+
+#login label {
+    margin: 0;
+}
+
+#joinButton {
+    grid-column: span 2;
+}
+
+#canvas {
+    margin: 10px;
+}
+
+#postsWall {
+    width: 500px;
+}
