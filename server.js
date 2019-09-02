@@ -6,12 +6,6 @@ const app = express();
 const server = app.listen(3000);
 app.use(express.static('dist'));
 
-// Express
-app.use('/room/:id', function (req, res, next) {
-    console.log(req.params.id);
-    return res.redirect('/room.html');
-});
-
 // SocketIO
 const io = socketio(server);
 
