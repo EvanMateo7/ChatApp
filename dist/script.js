@@ -23,16 +23,19 @@ joinButton.addEventListener('click', (e) => {
 // Listeners
 socket.on('clients', (data) => {
     console.log(data);
-    socket.emit('myRooms');
 });
 
 socket.on('myRooms', (rooms) => {
-    console.log(rooms)
+    console.log(rooms);
 });
 
-socket.on('post', (post) => {
+socket.on('newPost', (post) => {
     updatePostsWall(post);
 });
+
+socket.on('error', (error) => {
+    console.error(error.message);
+})
 
 
 // Functions

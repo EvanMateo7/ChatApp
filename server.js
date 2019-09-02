@@ -19,27 +19,33 @@ io.on('connect', (socket) => {
     console.log('Socket has connected with ID: ' + socket.id);
 
     // Room
-    socket.on('joinRoom', (data) => {
+    socket.on('joinRoom', joinRoom);
 
-        // Join
+    function joinRoom(data) {
+
+        if (Object.keys(io.sockets.adapter.sids[socket.id]).includes(data.roomID)) return;
+
+        // Join room
         socket.join(data.roomID);
 
         // Get clients
         io.in(data.roomID).clients((error, clients) => {
-            if (error) throw error;
-            io.to(data.roomID).emit('clients', clients);
-            socket.emit('myRooms', io.sockets.adapter.sids[socket.id] );
-          });
 
-        // Listen
+            // Emit to everyone in room including emitter
+            io.to(data.roomID).emit('clients', clients);      
+            
+            // Emit to self
+            io.to(socket.id).emit('myRooms', io.sockets.adapter.sids[socket.id] );
+        });
+
+        // Listeners
         socket.in(data.roomID).on('post', (post) => {
             post.roomID = data.roomID;
             post.name = data.name;
             console.log(post);
-            io.in(data.roomID).emit('post', post);
-        })
-    });
-
+            io.in(data.roomID).emit('newPost', post);
+        });
+    }
 
     // Canvas
     socket.on('mouse', (mouseCoord) => {
@@ -53,7 +59,7 @@ io.on('connect', (socket) => {
 
     // Disconnect
     socket.on('disconnect', () => {
-        socket.broadcast.emit('userDisconnect', 'user disconnected');
+        socket.removeAllListeners();
     });
 });
 
