@@ -21,7 +21,11 @@ joinButton.addEventListener('click', (e) => {
 });
 
 // Listeners
-socket.on('clients', (data) => {
+socket.on('clients', (roomID, clients) => {
+    const data = {
+        roomID,
+        clients
+    };
     console.log(data);
 });
 

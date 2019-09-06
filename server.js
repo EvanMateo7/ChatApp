@@ -1,6 +1,7 @@
 
 const express = require('express');
 const socketio = require('socket.io');
+const firebase = require('./firebaseServer');
 
 const app = express();
 const server = app.listen(3000);
@@ -26,7 +27,7 @@ io.on('connect', (socket) => {
         io.in(data.roomID).clients((error, clients) => {
 
             // Emit to everyone in room including emitter
-            io.to(data.roomID).emit('clients', clients);      
+            io.to(data.roomID).emit('clients', data.roomID, clients);      
             
             // Emit to self
             io.to(socket.id).emit('myRooms', io.sockets.adapter.sids[socket.id] );
