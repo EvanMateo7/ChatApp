@@ -3,6 +3,7 @@ const socket = io.connect('http://localhost:3000');
 const joinButton = document.getElementById('joinButton');
 const postsWall = document.getElementById('postsWall');
 const postMessage = document.getElementById('postMessage');
+const currentRoomID = null;
 
 // Join Room
 joinButton.addEventListener('click', (e) => {
@@ -33,6 +34,11 @@ socket.on('myRooms', (rooms) => {
     console.log(rooms);
 });
 
+socket.on('currentRoom', (currentRoomID) => {
+    this.currentRoomID = currentRoomID;
+    console.log('Current Room ID: ' + this.currentRoomID);
+});
+
 socket.on('newPost', (post) => {
     updatePostsWall(post);
 });
@@ -50,6 +56,7 @@ function sendMessage() {
     }
     
     const newPost = {
+        roomID: this.currentRoomID,
         message: postMessage.value
     }
     socket.emit('post', newPost);

@@ -16,41 +16,45 @@ io.on('connect', (socket) => {
     // Room
     socket.on('joinRoom', joinRoom);
 
-    function joinRoom(data) {
+        function joinRoom(data) {
 
-        if (Object.keys(io.sockets.adapter.sids[socket.id]).includes(data.roomID)) return;
+            // Check if socket is already in room
+            if (Object.keys(io.sockets.adapter.sids[socket.id]).includes(data.roomID)) {
+                io.to(socket.id).emit('currentRoom', data.roomID);
+                return;
+            }
 
-        // Join room
-        socket.join(data.roomID);
+            // Join room
+            socket.join(data.roomID);
 
-        // Get clients
-        io.in(data.roomID).clients((error, clients) => {
+            // Get clients
+            io.in(data.roomID).clients((error, clients) => {
 
-            // Emit to everyone in room including emitter
-            io.to(data.roomID).emit('clients', data.roomID, clients);      
-            
-            // Emit to self
-            io.to(socket.id).emit('myRooms', io.sockets.adapter.sids[socket.id] );
-        });
+                // Emit to everyone in room including emitter
+                io.to(data.roomID).emit('clients', data.roomID, clients);      
+                
+                // Emit to self all my rooms
+                io.to(socket.id).emit('myRooms', io.sockets.adapter.sids[socket.id]);
 
-        // Listeners
-        socket.in(data.roomID).on('post', (post) => {
-            post.roomID = data.roomID;
-            post.name = data.name;
-            console.log(post);
-            io.in(data.roomID).emit('newPost', post);
-        });
-    }
+                // Emit to self current room
+                io.to(socket.id).emit('currentRoom', data.roomID);
+            });
+
+            // Listeners
+            socket.in(data.roomID).on('post', (post) => {
+                if(data.roomID != post.roomID) return;
+
+                post.roomID = data.roomID;
+                post.name = data.name;
+                console.log(post);
+                io.in(data.roomID).emit('newPost', post);
+            });
+        }
 
     // Canvas
     socket.on('mouse', (mouseCoord) => {
         socket.broadcast.emit('mouse', mouseCoord);
     });
-
-    // Messages
-    // socket.on('post', (post) => {
-    //     io.emit('post', post);
-    // })
 
     // Disconnect
     socket.on('disconnect', () => {
