@@ -16,7 +16,27 @@ textarea {
 .flexColumnCenter {
     display: flex;
     flex-direction: column;
-    margin: 0 auto;
+    justify-content: center;
+    justify-items: center;
+}
+
+#roomNav {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    height: 50px;
+}
+
+#roomNav > div {
+    flex-grow: 1;
+    text-align: center;
+    border-bottom: 1px solid transparent;
+    overflow-wrap: break-word;
+}
+
+#roomNav > div:hover {
+    cursor: pointer;
+    border-bottom: 1px solid #007bff;
 }
 
 .post {
@@ -48,4 +68,5 @@ textarea {
 
 #postsWall {
     width: 500px;
+    margin: 0 auto;
 }

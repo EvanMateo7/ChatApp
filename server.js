@@ -20,7 +20,6 @@ io.on('connect', (socket) => {
 
             // Check if socket is already in room
             if (Object.keys(io.sockets.adapter.sids[socket.id]).includes(data.roomID)) {
-                io.to(socket.id).emit('currentRoom', data.roomID);
                 return;
             }
 
@@ -37,7 +36,7 @@ io.on('connect', (socket) => {
                 io.to(socket.id).emit('myRooms', io.sockets.adapter.sids[socket.id]);
 
                 // Emit to self current room
-                io.to(socket.id).emit('currentRoom', data.roomID);
+                io.to(socket.id).emit('newRoom', data.roomID);
             });
 
             // Listeners

@@ -3,7 +3,8 @@ const socket = io.connect('http://localhost:3000');
 const joinButton = document.getElementById('joinButton');
 const postsWall = document.getElementById('postsWall');
 const postMessage = document.getElementById('postMessage');
-const currentRoomID = null;
+let currentRoomID = null;
+let myRooms = {};
 
 // Join Room
 joinButton.addEventListener('click', (e) => {
@@ -31,12 +32,13 @@ socket.on('clients', (roomID, clients) => {
 });
 
 socket.on('myRooms', (rooms) => {
+    myRooms = rooms;
     console.log(rooms);
 });
 
-socket.on('currentRoom', (currentRoomID) => {
-    this.currentRoomID = currentRoomID;
-    console.log('Current Room ID: ' + this.currentRoomID);
+socket.on('newRoom', (newRoomID) => {
+    createRoom(newRoomID);
+    setRoom(newRoomID);
 });
 
 socket.on('newPost', (post) => {
@@ -75,7 +77,18 @@ function updatePostsWall(post) {
     postsWall.appendChild(newPost);
 }
 
+function setRoom(roomID) {
+    currentRoomID = roomID;
+    console.log('Current Room ID: ' + currentRoomID);
+}
 
+function createRoom(roomID) {
+    const postNode = document.createElement("div");
+    const postText = document.createTextNode(roomID);  
+    postNode.appendChild(postText);
+    postNode.classList.add("flexColumnCenter")
+    document.querySelector('#roomNav').appendChild(postNode);
+}
 
 
 
