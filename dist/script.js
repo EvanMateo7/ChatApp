@@ -56,9 +56,12 @@ function sendMessage() {
         console.error('message is empty');
         return;
     }
-    
+    if(currentRoomID == null) {
+        console.error("currentRoomID is null");
+        return;
+    }
     const newPost = {
-        roomID: this.currentRoomID,
+        roomID: currentRoomID,
         message: postMessage.value
     }
     socket.emit('post', newPost);
@@ -86,6 +89,9 @@ function createRoom(roomID) {
     const postNode = document.createElement("div");
     const postText = document.createTextNode(roomID);  
     postNode.appendChild(postText);
+    postNode.addEventListener("click", (event) => {
+        setRoom(roomID);
+    });
     postNode.classList.add("flexColumnCenter")
     document.querySelector('#roomNav').appendChild(postNode);
 }
