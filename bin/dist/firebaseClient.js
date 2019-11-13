@@ -1,4 +1,3 @@
-
 const firebaseConfig = {
     apiKey: "AIzaSyBY0UgjU--j4MOG8pOhnqvoU6x6nCSOCU8",
     authDomain: "chatapp-58582.firebaseapp.com",

@@ -1,4 +1,3 @@
-
 const socket = io.connect('http://localhost:3000');
 const joinButton = document.getElementById('joinButton');
 const postsWall = document.getElementById('postsWall');

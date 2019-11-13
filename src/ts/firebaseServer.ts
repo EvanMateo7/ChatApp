@@ -7,8 +7,4 @@ admin.initializeApp({
   databaseURL: 'https://chatapp-58582.firebaseio.com'
 });
 
-let db = admin.firestore();
-
-db.collection("rooms").doc("ass").set({
-  users: ["hole","4448"]
-}).catch( e => {console.log(e)});
+const db = admin.firestore();

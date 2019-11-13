@@ -1,11 +1,12 @@
 
-const express = require('express');
-const socketio = require('socket.io');
-const firebase = require('./firebaseServer');
+import * as express from "express";
+import * as socketio from "socket.io";
 
 const app = express();
 const server = app.listen(3000);
-app.use(express.static('dist'));
+app.use(express.static(__dirname + '/dist'));
+
+console.log("Express server starting...");
 
 // SocketIO
 const io = socketio(server);
@@ -60,6 +61,8 @@ io.on('connect', (socket) => {
         socket.removeAllListeners();
     });
 });
+
+console.log("Express server started!");
 
 
 
