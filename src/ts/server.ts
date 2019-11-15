@@ -40,9 +40,9 @@ io.on('connect', (socket) => {
                 io.to(socket.id).emit('newRoom', data.roomID);
             });
 
-            // Listeners
+            // Listeners in room
             socket.in(data.roomID).on('post', (post) => {
-                if(data.roomID != post.roomID) return;
+                //if(data.roomID != post.roomID) return;
 
                 post.roomID = data.roomID;
                 post.name = data.name;
@@ -50,11 +50,6 @@ io.on('connect', (socket) => {
                 io.in(data.roomID).emit('newPost', post);
             });
         }
-
-    // Canvas
-    socket.on('mouse', (mouseCoord) => {
-        socket.broadcast.emit('mouse', mouseCoord);
-    });
 
     // Disconnect
     socket.on('disconnect', () => {

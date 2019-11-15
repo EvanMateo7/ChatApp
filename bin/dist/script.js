@@ -15,7 +15,7 @@ joinButton.addEventListener('click', (e) => {
     }
     
     if(roomID.trim() == "" || name.trim() == "") {
-        console.error("Room ID or Name is empty");
+        alert("Room ID or Name is empty")
         return;
     }
     socket.emit('joinRoom', data);
@@ -52,7 +52,7 @@ socket.on('error', (error) => {
 // Functions
 function sendMessage() {
     if(postMessage.value.trim() == '') {
-        console.error('message is empty');
+        alert("message is empty")
         return;
     }
     if(currentRoomID == null) {
