@@ -28,20 +28,15 @@ io.on('connect', function (socket) {
             // Emit to self current room
             io.to(socket.id).emit('newRoom', data.roomID);
         });
-        // Listeners
+        // Listeners in room
         socket.in(data.roomID).on('post', function (post) {
-            if (data.roomID != post.roomID)
-                return;
+            //if(data.roomID != post.roomID) return;
             post.roomID = data.roomID;
             post.name = data.name;
             console.log(post);
             io.in(data.roomID).emit('newPost', post);
         });
     }
-    // Canvas
-    socket.on('mouse', function (mouseCoord) {
-        socket.broadcast.emit('mouse', mouseCoord);
-    });
     // Disconnect
     socket.on('disconnect', function () {
         socket.removeAllListeners();
