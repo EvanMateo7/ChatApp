@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+      "module": "es6",
+      "skipLibCheck": true,
+      "outDir": "bin/dist"
+    },
+  "extends": "./tsconfig.json",
+  "include": [
+      "src/client"
+  ]
+}
