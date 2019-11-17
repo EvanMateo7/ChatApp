@@ -2,9 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var express = require("express");
 var socketio = require("socket.io");
+;
 var app = express();
 var server = app.listen(3000);
-app.use(express.static(__dirname + '/dist'));
+app.use(express.static('dist'));
 console.log("Express server starting...");
 // SocketIO
 var io = socketio(server);

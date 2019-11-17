@@ -3,10 +3,10 @@
     "target": "es5",
     "module": "commonjs",
     "sourceMap": true,
-    "outDir": "bin"
+    "outDir": "server"
   },
   "include": [
-    "src/server", "tsconfig.client.json"
+    "src/server"
   ],
   "exclude": [
     "node_modules"

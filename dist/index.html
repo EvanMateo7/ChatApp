@@ -11,10 +11,8 @@
     <link rel="stylesheet" href="style.css">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/6.5.0/firebase-app.js"></script>
 
-    <script defer type="module" src="../firebaseClient.js"></script>
-    <script defer type="module" src="../script.js"></script>
+    <script defer type="module" src="./bundle.js"></script>
 
 
     <title>Welcome!</title>
@@ -37,11 +35,12 @@
     <div id="canvas" class="flexRowCenter"></div>
     <div id="postForm" class="flexRowCenter">
         <textarea id="postMessage" cols="30" rows="3"></textarea>
-        <div class="flexRowCenter"><button class="btn btn-primary btn-sm" onclick="sendMessage()">Send</button></div>
+        <div class="flexRowCenter"><button id="sendButton" class="btn btn-primary btn-sm">Send</button></div>
     </div>
     <div id="roomNav">
     </div>
     <div id="postsWall"></div>
+    <button id="googleSignInButton"">Google Sign In</button>
 </body>
 
 </html>
