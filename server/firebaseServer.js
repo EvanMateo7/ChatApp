@@ -1,4 +1,6 @@
-var admin = require('firebase-admin');
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var admin = require("firebase-admin");
 admin.initializeApp({
     // GOOGLE_APPLICATION_CREDENTIALS environment variable
     credential: admin.credential.applicationDefault(),

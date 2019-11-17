@@ -1,14 +1,18 @@
+import {firebaseInit as firebase, firebaseAuth, googleAuthProvider} from "./firebaseClient";
+
 const socket = io.connect('http://localhost:3000');
-const joinButton = document.getElementById('joinButton');
-const postsWall = document.getElementById('postsWall');
-const postMessage = document.getElementById('postMessage');
+const joinButton = (document.getElementById('joinButton') as HTMLInputElement);
+const sendButton = (document.getElementById('sendButton') as HTMLInputElement);
+const googleSignInButton = (document.getElementById('googleSignInButton') as HTMLInputElement);
+const postsWall = (document.getElementById('postsWall') as HTMLElement);
+const message = (document.getElementById('postMessage') as HTMLInputElement);
 let currentRoomID = null;
 let myRooms = {};
 
 // Join Room
 joinButton.addEventListener('click', (e) => {
-    const roomID = document.getElementById('roomID').value;
-    const name = document.getElementById('name').value;
+    const roomID = (document.getElementById('roomID') as HTMLInputElement).value;
+    const name = (document.getElementById('name') as HTMLInputElement).value;
     const data = {
         roomID: roomID,
         name: name
@@ -19,6 +23,22 @@ joinButton.addEventListener('click', (e) => {
         return;
     }
     socket.emit('joinRoom', data);
+});
+
+sendButton.addEventListener('click', sendMessage);
+googleSignInButton.addEventListener('click', async() => {
+    console.log("google");
+    
+    await firebaseAuth.signInWithPopup(googleAuthProvider).then(function(result) {
+        var user = result.user;
+        console.log(user.uid);
+        
+      }).catch(function(error) {
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        var email = error.email;
+        var credential = error.credential;
+      });
 });
 
 // Listeners
@@ -50,8 +70,8 @@ socket.on('error', (error) => {
 
 
 // Functions
-function sendMessage() {
-    if(postMessage.value.trim() == '') {
+export function sendMessage() {
+    if(message.value.trim() == '') {
         alert("message is empty")
         return;
     }
@@ -61,10 +81,10 @@ function sendMessage() {
     }
     const newPost = {
         roomID: currentRoomID,
-        message: postMessage.value
+        message: message.value
     }
     socket.emit('post', newPost);
-    postMessage.value = '';
+    message.value = '';
 }
 
 function updatePostsWall(post) {
@@ -93,40 +113,4 @@ function createRoom(roomID) {
     });
     postNode.classList.add("flexColumnCenter")
     document.querySelector('#roomNav').appendChild(postNode);
-}
-
-
-
-
-
-
-
-
-
-socket.on('mouse', (mouseCoord) => {
-    fill(255, 255, 0);
-    noStroke();
-    ellipse(mouseCoord.x, mouseCoord.y, 10, 10);
-})
-
-function setup() {
-    createCanvas(200,200).parent('canvas');
-    background(100);
-}
-
-function draw() {
-    
-}
-
-function mouseDragged() {
-    fill(255);
-    noStroke();
-    ellipse(mouseX, mouseY, 10, 10);
-
-    const data = {
-        x: mouseX,
-        y: mouseY
-    }
-
-    socket.emit('mouse', data);
 }

@@ -1,10 +1,10 @@
 
 import * as express from "express";
 import * as socketio from "socket.io";
-
+;
 const app = express();
 const server = app.listen(3000);
-app.use(express.static(__dirname + '/dist'));
+app.use(express.static('dist'));
 
 console.log("Express server starting...");
 
