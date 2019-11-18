@@ -1,5 +1,6 @@
 import {firebaseInit as firebase, firebaseAuth, googleAuthProvider} from "./firebaseClient";
 
+
 const socket = io.connect('http://localhost:3000');
 const joinButton = (document.getElementById('joinButton') as HTMLInputElement);
 const sendButton = (document.getElementById('sendButton') as HTMLInputElement);
