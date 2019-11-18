@@ -1,3 +1,5 @@
+const path = require("path");
+
 module.exports = {
     mode: "development",
     devtool: "inline-source-map",
@@ -12,9 +14,14 @@ module.exports = {
       rules: [
         {   
             test: /\.tsx?$/, 
-            loader: "ts-loader" ,
+            loader: "ts-loader",
+            include: path.resolve(__dirname, 'src/client'),
             exclude: /node_modules/
         }
       ]
+    },
+    watch: true,
+    watchOptions: {
+      ignored: /node_modules/
     }
   };
