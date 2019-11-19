@@ -1,6 +1,7 @@
 
 import * as express from "express";
 import * as socketio from "socket.io";
+import * as firebase from "./firebaseServer";
 
 const app = express();
 const server = app.listen(3000);
@@ -51,11 +52,17 @@ io.on('connect', (socket) => {
             });
         }
 
+    socket.on('login', (UID:String, displayName:String) => {
+        firebase.addUser(UID, displayName);
+    });
+
     // Disconnect
     socket.on('disconnect', () => {
         socket.removeAllListeners();
     });
 });
+
+
 
 console.log("Express server started!");
 

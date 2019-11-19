@@ -28,11 +28,11 @@ joinButton.addEventListener('click', (e) => {
 
 sendButton.addEventListener('click', sendMessage);
 googleSignInButton.addEventListener('click', async() => {
-    console.log("google");
     
     await firebaseAuth.signInWithPopup(googleAuthProvider).then(function(result) {
         var user = result.user;
-        console.log(user.uid);
+        console.log(`Logged in with UID ${user.displayName}!`);
+        socket.emit('login', user.uid, user.displayName);
         
       }).catch(function(error) {
         var errorCode = error.code;
@@ -40,6 +40,7 @@ googleSignInButton.addEventListener('click', async() => {
         var email = error.email;
         var credential = error.credential;
       });
+
 });
 
 // Listeners

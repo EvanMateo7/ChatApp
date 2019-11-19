@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var express = require("express");
 var socketio = require("socket.io");
+var firebase = require("./firebaseServer");
 var app = express();
 var server = app.listen(3000);
 app.use(express.static('dist'));
@@ -37,6 +38,9 @@ io.on('connect', function (socket) {
             io.in(data.roomID).emit('newPost', post);
         });
     }
+    socket.on('login', function (UID, displayName) {
+        firebase.addUser(UID, displayName);
+    });
     // Disconnect
     socket.on('disconnect', function () {
         socket.removeAllListeners();
