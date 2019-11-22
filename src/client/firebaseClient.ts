@@ -13,6 +13,17 @@ const firebaseConfig = {
 
 export const firebaseInit = firebase.initializeApp(firebaseConfig);
 export const firebaseAuth = firebase.auth();
-export const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
+export const googleAuthProvider = new firebase.auth.GoogleAuthProvider().setCustomParameters({
+  prompt: 'select_account'
+});
 
+export function googleLogin() {
+  return firebaseAuth.signInWithPopup(googleAuthProvider)
+    .then( user => {
+      return user.user;
+    })
+    .catch(function (error) {
+        console.error("Error: Google sign-in in firebaseClient.ts");
+    });
+}
 console.log("Initialized FirebaseApp!");
