@@ -31,15 +31,14 @@ io.on('connect', function (socket) {
         });
         // Listeners in room
         socket.in(data.roomID).on('post', function (post) {
-            //if(data.roomID != post.roomID) return;
             post.roomID = data.roomID;
             post.name = data.name;
             console.log(post);
             io.in(data.roomID).emit('newPost', post);
         });
     }
-    socket.on('login', function (UID, displayName) {
-        firebase.addUser(UID, displayName);
+    socket.on('login', function (user) {
+        firebase.addUser(user).catch(function (e) { return console.error("Error: addUser in server.ts"); });
     });
     // Disconnect
     socket.on('disconnect', function () {

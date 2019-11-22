@@ -43,8 +43,6 @@ io.on('connect', (socket) => {
 
             // Listeners in room
             socket.in(data.roomID).on('post', (post) => {
-                //if(data.roomID != post.roomID) return;
-
                 post.roomID = data.roomID;
                 post.name = data.name;
                 console.log(post);
@@ -52,8 +50,8 @@ io.on('connect', (socket) => {
             });
         }
 
-    socket.on('login', (UID:String, displayName:String) => {
-        firebase.addUser(UID, displayName);
+    socket.on('login', (user) => {
+        firebase.addUser(user).catch( e => console.error("Error: addUser in server.ts"));
     });
 
     // Disconnect

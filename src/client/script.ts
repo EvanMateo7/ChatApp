@@ -1,4 +1,4 @@
-import {firebaseInit as firebase, firebaseAuth, googleAuthProvider} from "./firebaseClient";
+import * as firebase from "./firebaseClient";
 
 
 const socket = io.connect('http://localhost:3000');
@@ -10,6 +10,13 @@ const message = (document.getElementById('postMessage') as HTMLInputElement);
 let currentRoomID = null;
 let myRooms = {};
 
+sendButton.addEventListener('click', sendMessage);
+
+googleSignInButton.addEventListener('click', () => {
+    firebase.googleLogin().then( user => socket.emit('login', user));
+});
+
+
 // Join Room
 joinButton.addEventListener('click', (e) => {
     const roomID = (document.getElementById('roomID') as HTMLInputElement).value;
@@ -18,30 +25,14 @@ joinButton.addEventListener('click', (e) => {
         roomID: roomID,
         name: name
     }
-    
-    if(roomID.trim() == "" || name.trim() == "") {
+
+    if (roomID.trim() == "" || name.trim() == "") {
         alert("Room ID or Name is empty")
         return;
     }
     socket.emit('joinRoom', data);
 });
 
-sendButton.addEventListener('click', sendMessage);
-googleSignInButton.addEventListener('click', async() => {
-    
-    await firebaseAuth.signInWithPopup(googleAuthProvider).then(function(result) {
-        var user = result.user;
-        console.log(`Logged in with UID ${user.displayName}!`);
-        socket.emit('login', user.uid, user.displayName);
-        
-      }).catch(function(error) {
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        var email = error.email;
-        var credential = error.credential;
-      });
-
-});
 
 // Listeners
 socket.on('clients', (roomID, clients) => {
@@ -73,12 +64,12 @@ socket.on('error', (error) => {
 
 // Functions
 export function sendMessage() {
-    if(message.value.trim() == '') {
+    if (message.value.trim() == '') {
         alert("message is empty")
         return;
     }
-    if(currentRoomID == null) {
-        console.error("currentRoomID is null");
+    if (currentRoomID == null) {
+        console.error("Error: currentRoomID is null");
         return;
     }
     const newPost = {
@@ -93,7 +84,7 @@ function updatePostsWall(post) {
     const newPost = document.createElement('div');
     newPost.className = 'post';
     console.log(post);
-    if(post.roomID)
+    if (post.roomID)
         newPost.innerText = post.roomID + ' - ' + post.name + ': ' + post.message;
     else
         newPost.innerText = post.name + ': ' + post.message;
@@ -108,7 +99,7 @@ function setRoom(roomID) {
 
 function createRoom(roomID) {
     const postNode = document.createElement("div");
-    const postText = document.createTextNode(roomID);  
+    const postText = document.createTextNode(roomID);
     postNode.appendChild(postText);
     postNode.addEventListener("click", (event) => {
         setRoom(roomID);
