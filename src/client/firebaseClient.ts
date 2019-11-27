@@ -22,8 +22,8 @@ export function googleLogin() {
     .then( user => {
       return user.user;
     })
-    .catch(function (error) {
-        console.error("Error: Google sign-in in firebaseClient.ts");
+    .catch( e => {
+        console.error(`${e} - Source: firebaseClient.ts`);
     });
 }
 console.log("Initialized FirebaseApp!");

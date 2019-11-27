@@ -13,7 +13,7 @@ let myRooms = {};
 sendButton.addEventListener('click', sendMessage);
 
 googleSignInButton.addEventListener('click', () => {
-    firebase.googleLogin().then( user => socket.emit('login', user));
+    firebase.googleLogin().then( user => {user ? socket.emit('login', user) : null} );
 });
 
 
