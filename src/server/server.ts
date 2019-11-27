@@ -16,42 +16,41 @@ io.on('connect', (socket) => {
     console.log('Socket has connected with ID: ' + socket.id);
 
     // Room
-    socket.on('joinRoom', joinRoom);
-
-        function joinRoom(data) {
-
-            // Check if socket is already in room
-            if (Object.keys(io.sockets.adapter.sids[socket.id]).includes(data.roomID)) {
-                return;
-            }
-
-            // Join room
-            socket.join(data.roomID);
-
-            // Get clients
-            io.in(data.roomID).clients((error, clients) => {
-
-                // Emit to everyone in room including emitter
-                io.to(data.roomID).emit('clients', data.roomID, clients);      
-                
-                // Emit to self all my rooms
-                io.to(socket.id).emit('myRooms', io.sockets.adapter.sids[socket.id]);
-
-                // Emit to self current room
-                io.to(socket.id).emit('newRoom', data.roomID);
-            });
-
-            // Listeners in room
-            socket.in(data.roomID).on('post', (post) => {
-                post.roomID = data.roomID;
-                post.name = data.name;
-                console.log(post);
-                io.in(data.roomID).emit('newPost', post);
-            });
+    socket.on('joinRoom', (data) => {
+        // Check if socket is already in room
+        if (Object.keys(io.sockets.adapter.sids[socket.id]).includes(data.roomID)) {
+            return;
         }
 
+        // Join room
+        socket.join(data.roomID);
+
+        // Get clients
+        io.in(data.roomID).clients((error, clients) => {
+
+            // Emit to everyone in room including emitter
+            io.to(data.roomID).emit('clients', data.roomID, clients);      
+            
+            // Emit to self all my rooms
+            io.to(socket.id).emit('myRooms', io.sockets.adapter.sids[socket.id]);
+
+            // Emit to self current room
+            io.to(socket.id).emit('newRoom', data.roomID);
+        });
+
+        // Listeners in room
+        socket.in(data.roomID).on('post', (post) => {
+            post.roomID = data.roomID;
+            post.name = data.name;
+            console.log(post);
+            io.in(data.roomID).emit('newPost', post);
+        });
+    });
+
+        
+
     socket.on('login', (user) => {
-        firebase.addUser(user).catch( e => console.error("Error: addUser in server.ts"));
+        firebase.addUser(user).catch( e => console.error(`${e} - Source: server.ts`));
     });
 
     // Disconnect

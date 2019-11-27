@@ -59,7 +59,7 @@ function addUser(user) {
                             name: user.displayName
                         })
                             .then(function () { return console.log("New user created with UID " + user.uid); })
-                            .catch(function (e) { return console.error("Error: setting new user in firebaseServer.ts"); });
+                            .catch(function (e) { return console.error(e + " - Source: firebaseServer.ts"); });
                     }
                     else {
                         console.log("User " + user.uid + " already exists.");

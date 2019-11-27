@@ -20,7 +20,7 @@ export async function addUser(user: admin.auth.UserInfo) {
       name: user.displayName
     })
     .then( () => console.log(`New user created with UID ${user.uid}`))
-    .catch( e => console.error(`Error: setting new user in firebaseServer.ts`));
+    .catch( e => console.error(`${e} - Source: firebaseServer.ts`));
   }
   else {
     console.log(`User ${user.uid} already exists.`);
