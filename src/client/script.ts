@@ -63,7 +63,7 @@ socket.on('error', (error) => {
 
 
 // Functions
-export function sendMessage() {
+function sendMessage() {
     if (message.value.trim() == '') {
         alert("message is empty")
         return;

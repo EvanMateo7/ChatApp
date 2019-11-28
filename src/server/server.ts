@@ -17,6 +17,9 @@ io.on('connect', (socket) => {
 
     // Room
     socket.on('joinRoom', (data) => {
+        // Create room
+        firebase.joinRoom(data.roomID)
+            .catch( e => console.error(`${e} - Source firebaseClient.ts`) );
         // Check if socket is already in room
         if (Object.keys(io.sockets.adapter.sids[socket.id]).includes(data.roomID)) {
             return;
