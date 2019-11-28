@@ -26,3 +26,15 @@ export async function addUser(user: admin.auth.UserInfo) {
     console.log(`User ${user.uid} already exists.`);
   }
 };
+
+export async function joinRoom(roomID) {
+  const roomRef = db.collection("rooms");
+
+  const roomExists: boolean = await roomRef.doc(roomID).get().then( room => room.exists );
+
+  if(!roomExists) {
+    roomRef.doc(roomID).collection("messages").doc().create({})
+      .catch( e => console.error(`${e} - Source firebaseServer.ts`) );
+    console.log(`Room created with ID: ${roomID}`);
+  }
+}

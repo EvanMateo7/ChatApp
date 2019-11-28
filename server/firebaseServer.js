@@ -71,4 +71,25 @@ function addUser(user) {
 }
 exports.addUser = addUser;
 ;
+function joinRoom(roomID) {
+    return __awaiter(this, void 0, void 0, function () {
+        var roomRef, roomExists;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    roomRef = db.collection("rooms");
+                    return [4 /*yield*/, roomRef.doc(roomID).get().then(function (room) { return room.exists; })];
+                case 1:
+                    roomExists = _a.sent();
+                    if (!roomExists) {
+                        roomRef.doc(roomID).collection("messages").doc().create({})
+                            .catch(function (e) { return console.error(e + " - Source firebaseServer.ts"); });
+                        console.log("Room created with ID: " + roomID);
+                    }
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+exports.joinRoom = joinRoom;
 //# sourceMappingURL=firebaseServer.js.map
