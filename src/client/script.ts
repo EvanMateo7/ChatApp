@@ -1,12 +1,13 @@
 import * as firebase from "./firebaseClient";
+import { Message, RoomJoin } from "../model/models";
 
 
 const socket = io.connect('http://localhost:3000');
 const joinButton = (document.getElementById('joinButton') as HTMLInputElement);
 const sendButton = (document.getElementById('sendButton') as HTMLInputElement);
 const googleSignInButton = (document.getElementById('googleSignInButton') as HTMLInputElement);
-const postsWall = (document.getElementById('postsWall') as HTMLElement);
-const message = (document.getElementById('postMessage') as HTMLInputElement);
+const messageWall = (document.getElementById('messageWall') as HTMLElement);
+const message = (document.getElementById('message') as HTMLInputElement);
 let currentRoomID = null;
 let myRooms = {};
 
@@ -21,7 +22,7 @@ googleSignInButton.addEventListener('click', () => {
 joinButton.addEventListener('click', (e) => {
     const roomID = (document.getElementById('roomID') as HTMLInputElement).value;
     const name = (document.getElementById('name') as HTMLInputElement).value;
-    const data = {
+    const roomJoin: RoomJoin = {
         roomID: roomID,
         name: name
     }
@@ -30,7 +31,7 @@ joinButton.addEventListener('click', (e) => {
         alert("Room ID or Name is empty")
         return;
     }
-    socket.emit('joinRoom', data);
+    socket.emit('joinRoom', roomJoin);
 });
 
 
@@ -53,8 +54,8 @@ socket.on('newRoom', (newRoomID) => {
     setRoom(newRoomID);
 });
 
-socket.on('newPost', (post) => {
-    updatePostsWall(post);
+socket.on('newMessage', (message) => {
+    updateMessageWall(message);
 });
 
 socket.on('error', (error) => {
@@ -72,24 +73,25 @@ function sendMessage() {
         console.error("Error: currentRoomID is null");
         return;
     }
-    const newPost = {
-        roomID: currentRoomID,
+    const newMessage: Message = {
+        sender: null,
         message: message.value
     }
-    socket.emit('post', newPost);
+    
+    socket.emit('message', newMessage);
     message.value = '';
 }
 
-function updatePostsWall(post) {
-    const newPost = document.createElement('div');
-    newPost.className = 'post';
-    console.log(post);
-    if (post.roomID)
-        newPost.innerText = post.roomID + ' - ' + post.name + ': ' + post.message;
+function updateMessageWall(message: Message) {
+    const newMessage = document.createElement('div');
+    newMessage.className = 'message';
+    console.log(message);
+    if (message.roomID)
+        newMessage.innerText = message.roomID + ' - ' + message.sender + ': ' + message.message;
     else
-        newPost.innerText = post.name + ': ' + post.message;
+        newMessage.innerText = message.sender + ': ' + message.message;
 
-    postsWall.appendChild(newPost);
+    messageWall.appendChild(newMessage);
 }
 
 function setRoom(roomID) {
@@ -98,12 +100,12 @@ function setRoom(roomID) {
 }
 
 function createRoom(roomID) {
-    const postNode = document.createElement("div");
-    const postText = document.createTextNode(roomID);
-    postNode.appendChild(postText);
-    postNode.addEventListener("click", (event) => {
+    const messageNode = document.createElement("div");
+    const messageText = document.createTextNode(roomID);
+    messageNode.appendChild(messageText);
+    messageNode.addEventListener("click", (event) => {
         setRoom(roomID);
     });
-    postNode.classList.add("flexColumnCenter")
-    document.querySelector('#roomNav').appendChild(postNode);
+    messageNode.classList.add("flexColumnCenter")
+    document.querySelector('#roomNav').appendChild(messageNode);
 }
