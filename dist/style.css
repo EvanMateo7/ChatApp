@@ -39,7 +39,7 @@ textarea {
     border-bottom: 2px solid #007bff;
 }
 
-.post {
+.message {
     margin: 10px;
     padding: 10px;
     border: solid 1px darkgrey;
@@ -66,7 +66,7 @@ textarea {
     margin: 10px;
 }
 
-#postsWall {
+#messageWall {
     width: 500px;
     margin: 0 auto;
 }

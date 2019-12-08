@@ -10,12 +10,9 @@
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="style.css">
 
-    <script src="lib/p5.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/6.5.0/firebase-app.js"></script>
 
-    <script defer src="firebaseClient.js"></script>
-    <script defer src="script.js"></script>
+    <script defer type="module" src="./bundle.js"></script>
 
 
     <title>Welcome!</title>
@@ -36,13 +33,14 @@
         <button class="btn btn-primary btn-sm" id="joinButton">Join</button>
     </div>
     <div id="canvas" class="flexRowCenter"></div>
-    <div id="postForm" class="flexRowCenter">
-        <textarea id="postMessage" cols="30" rows="3"></textarea>
-        <div class="flexRowCenter"><button class="btn btn-primary btn-sm" onclick="sendMessage()">Send</button></div>
+    <div id="messageForm" class="flexRowCenter">
+        <textarea id="message" cols="30" rows="3"></textarea>
+        <div class="flexRowCenter"><button id="sendButton" class="btn btn-primary btn-sm">Send</button></div>
     </div>
     <div id="roomNav">
     </div>
-    <div id="postsWall"></div>
+    <div id="messageWall"></div>
+    <button id="googleSignInButton"">Google Sign In</button>
 </body>
 
 </html>
