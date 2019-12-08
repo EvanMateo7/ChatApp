@@ -47,6 +47,6 @@ export async function storeMessage(roomID, message) {
   if(roomExists) {
     roomRef.doc(roomID).collection("messages").doc().create(message)
       .catch( e => console.error(`${e} - Source sssfirebaseServer.ts`) );
-    console.log(`Message saved: ${message}`);
+    console.log(`Message saved: ${JSON.stringify(message)}`);
   }
 }

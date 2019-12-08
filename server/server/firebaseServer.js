@@ -105,7 +105,7 @@ function storeMessage(roomID, message) {
                     if (roomExists) {
                         roomRef.doc(roomID).collection("messages").doc().create(message)
                             .catch(function (e) { return console.error(e + " - Source sssfirebaseServer.ts"); });
-                        console.log("Message saved: " + message);
+                        console.log("Message saved: " + JSON.stringify(message));
                     }
                     return [2 /*return*/];
             }
