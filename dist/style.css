@@ -40,6 +40,8 @@ textarea {
 
 #roomNav {
     display: flex;
+    border: 1px solid gray;
+    border-radius: 5px;
     flex-direction: column;
     height: 100%;
     overflow: auto;
@@ -52,9 +54,12 @@ textarea {
     overflow-wrap: break-word;
 }
 
-#roomNav > div:hover {
+#roomNav > div:hover, #selectedRoom {
     cursor: pointer;
-    border-bottom: 2px solid #007bff;
+    background: rgb(0,123,255);
+    background: radial-gradient(circle, rgba(0,123,255,1) 0%, rgba(70,159,255,1) 100%);
+    color: white;
+    font-weight: bold;
 }
 
 .message {
@@ -84,7 +89,7 @@ textarea {
     margin: 10px;
 }
 
-#messageWall {
+.messageWall {
     width: 500px;
     margin: 0 auto;
 }
