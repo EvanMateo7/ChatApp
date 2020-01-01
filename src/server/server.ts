@@ -48,9 +48,11 @@ io.on('connect', (socket) => {
         socket.in(roomID).on('message', (message: Message) => {
             message.sender = roomJoin.name;
             
-            firebase.storeMessage(roomID, message)
-                .then( () => io.in(roomID).emit('newMessage', message))
-                .catch( e => console.error(`${e} - Source: server.ts`));
+            if(message.roomID == roomID) {
+                firebase.storeMessage(message.roomID, message)
+                    .then( () => io.in(message.roomID).emit('newMessage', message))
+                    .catch( e => console.error(`${e} - Source: server.ts`));    
+            }
         });
     });
 

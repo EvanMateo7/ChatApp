@@ -35,9 +35,11 @@ io.on('connect', function (socket) {
         // Listeners in room
         socket.in(roomID).on('message', function (message) {
             message.sender = roomJoin.name;
-            firebase.storeMessage(roomID, message)
-                .then(function () { return io.in(roomID).emit('newMessage', message); })
-                .catch(function (e) { return console.error(e + " - Source: server.ts"); });
+            if (message.roomID == roomID) {
+                firebase.storeMessage(message.roomID, message)
+                    .then(function () { return io.in(message.roomID).emit('newMessage', message); })
+                    .catch(function (e) { return console.error(e + " - Source: server.ts"); });
+            }
         });
     });
     socket.on('login', function (user) {
