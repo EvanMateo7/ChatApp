@@ -1,5 +1,14 @@
 import * as firebase from "./firebaseClient";
 import { Message, RoomJoin } from "../model/models";
+import * as React from "react";
+import * as ReactDOM from "react-dom";
+
+import { Hello } from "./Hello";
+
+ReactDOM.render(
+    <Hello compiler="TypeScript" framework="React" />,
+    document.getElementById("root")
+);
 
 
 const socket = io.connect('http://localhost:3000');

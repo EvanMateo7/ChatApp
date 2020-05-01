@@ -3,7 +3,7 @@ const path = require("path");
 module.exports = {
     mode: "development",
     devtool: "inline-source-map",
-    entry: "./src/client/script.ts",
+    entry: "./src/client/script.tsx",
     output: {
       filename: "bundle.js"
     },
@@ -23,5 +23,9 @@ module.exports = {
     watch: true,
     watchOptions: {
       ignored: /node_modules/
+    },
+    externals: {
+      "react": "React",
+      "react-dom": "ReactDOM"
     }
   };
