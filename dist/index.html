@@ -19,28 +19,41 @@
 </head>
 
 <body>
-    <div id="joinContainer">
-        <div>
-            <label for="roomID">Room ID</label>
-            <input type="text" id="roomID">
+    <div class="main_container">
+
+        <div class="nav_container">
+            <button id="googleSignInButton"">Google Sign In</button>
         </div>
 
-        <div>
-            <label for="name">Your Name</label>
-            <input type="text" id="name">
+        <div class="room_container">
+            <div id="roomNav"></div>
         </div>
 
-        <button class="btn btn-primary btn-sm" id="joinButton">Join</button>
+        <div class="chat_container">
+            <div id="joinContainer">
+                <div>
+                    <label for="roomID">Room ID</label>
+                    <input type="text" id="roomID">
+                </div>
+    
+                <div>
+                    <label for="name">Your Name</label>
+                    <input type="text" id="name">
+                </div>
+    
+                <button class="btn btn-primary btn-sm" id="joinButton">Join</button>
+            </div>
+            <div id="canvas" class="flexRowCenter"></div>
+            <div id="messageForm" class="flexRowCenter">
+                <textarea id="message" cols="30" rows="3"></textarea>
+                <div class="flexRowCenter"><button id="sendButton" class="btn btn-primary btn-sm">Send</button></div>
+            </div>
+            
+            <div id="messageWallContainer">
+            </div>
+            
+        </div>
     </div>
-    <div id="canvas" class="flexRowCenter"></div>
-    <div id="messageForm" class="flexRowCenter">
-        <textarea id="message" cols="30" rows="3"></textarea>
-        <div class="flexRowCenter"><button id="sendButton" class="btn btn-primary btn-sm">Send</button></div>
-    </div>
-    <div id="roomNav">
-    </div>
-    <div id="messageWall"></div>
-    <button id="googleSignInButton"">Google Sign In</button>
 </body>
 
 </html>

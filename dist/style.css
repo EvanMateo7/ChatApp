@@ -8,6 +8,24 @@ textarea {
     display: block;
 }
 
+.main_container {
+    display: grid;
+    grid-template: "nav nav" 50px 
+                   "rooms chat" 500px / 300px auto;
+}
+
+.nav_container {
+    grid-area: nav;
+}
+
+.room_container {
+    grid-area: rooms;
+}
+
+.chat_container {
+    grid-area: chat;
+}
+
 .flexRowCenter {
     display: flex;
     justify-content: center;
@@ -22,21 +40,26 @@ textarea {
 
 #roomNav {
     display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-    height: 50px;
+    border: 1px solid gray;
+    border-radius: 5px;
+    flex-direction: column;
+    height: 100%;
+    overflow: auto;
 }
 
 #roomNav > div {
-    flex-grow: 1;
+    /*flex-grow: 1;*/
     text-align: center;
     border-bottom: 2px solid transparent;
     overflow-wrap: break-word;
 }
 
-#roomNav > div:hover {
+#roomNav > div:hover, #selectedRoom {
     cursor: pointer;
-    border-bottom: 2px solid #007bff;
+    background: rgb(0,123,255);
+    background: radial-gradient(circle, rgba(0,123,255,1) 0%, rgba(70,159,255,1) 100%);
+    color: white;
+    font-weight: bold;
 }
 
 .message {
@@ -66,7 +89,7 @@ textarea {
     margin: 10px;
 }
 
-#messageWall {
+.messageWall {
     width: 500px;
     margin: 0 auto;
 }

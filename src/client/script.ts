@@ -6,7 +6,6 @@ const socket = io.connect('http://localhost:3000');
 const joinButton = (document.getElementById('joinButton') as HTMLInputElement);
 const sendButton = (document.getElementById('sendButton') as HTMLInputElement);
 const googleSignInButton = (document.getElementById('googleSignInButton') as HTMLInputElement);
-const messageWall = (document.getElementById('messageWall') as HTMLElement);
 const message = (document.getElementById('message') as HTMLInputElement);
 let currentRoomID = null;
 let myRooms = {};
@@ -56,6 +55,7 @@ socket.on('newRoom', (newRoomID) => {
 
 socket.on('newMessage', (message) => {
     updateMessageWall(message);
+    console.log("new message")
 });
 
 socket.on('error', (error) => {
@@ -75,10 +75,12 @@ function sendMessage() {
     }
     const newMessage: Message = {
         sender: null,
-        message: message.value
+        message: message.value,
+        roomID: currentRoomID
     }
     
     socket.emit('message', newMessage);
+    console.log('sent new message')
     message.value = '';
 }
 
@@ -91,21 +93,52 @@ function updateMessageWall(message: Message) {
     else
         newMessage.innerText = message.sender + ': ' + message.message;
 
+    const messageWall = (document.querySelector(`.messageWall[data-roomID = "${message.roomID}"]`) as HTMLElement);
     messageWall.appendChild(newMessage);
 }
 
 function setRoom(roomID) {
     currentRoomID = roomID;
+    updateRoomListUI();
+    toggleRoomWall();
     console.log('Current Room ID: ' + currentRoomID);
 }
 
 function createRoom(roomID) {
-    const messageNode = document.createElement("div");
+    const roomDiv = document.createElement("div");
+    const newMessageWall = document.createElement("div");
+
+    // Room List
     const messageText = document.createTextNode(roomID);
-    messageNode.appendChild(messageText);
-    messageNode.addEventListener("click", (event) => {
+    roomDiv.appendChild(messageText);
+    roomDiv.setAttribute('data-roomID', roomID);
+    roomDiv.addEventListener("click", (event) => {
         setRoom(roomID);
     });
-    messageNode.classList.add("flexColumnCenter")
-    document.querySelector('#roomNav').appendChild(messageNode);
+    roomDiv.classList.add("flexColumnCenter")
+    document.querySelector('#roomNav').appendChild(roomDiv);
+
+    // Room Message Wall
+    newMessageWall.classList.add('messageWall');
+    newMessageWall.setAttribute('data-roomID', roomID);
+    document.querySelector('#messageWallContainer').appendChild(newMessageWall);
+}
+
+function updateRoomListUI() {
+    const roomDivs = document.querySelectorAll(`#roomNav div[data-roomID]`);
+    roomDivs.forEach( div => {
+        div.removeAttribute('id')
+        if(div.getAttribute('data-roomID') == currentRoomID)
+            div.setAttribute('id', 'selectedRoom');
+
+    });
+}
+
+function toggleRoomWall() {
+    const messageWalls = document.querySelectorAll('.messageWall');
+    messageWalls.forEach( wall => {
+        wall.setAttribute('style', 'display:none');
+        if(wall.getAttribute('data-roomID') == currentRoomID)
+        wall.setAttribute('style', 'display:block');
+    });
 }
