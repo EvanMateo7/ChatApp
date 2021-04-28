@@ -4,7 +4,9 @@
     "module": "commonjs",
     "sourceMap": true,
     "outDir": "server",
-    "jsx": "react"
+    "jsx": "react",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true
   },
   "include": [
     "src/server"
