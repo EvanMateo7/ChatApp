@@ -1,11 +1,14 @@
 
-body {
-    margin: 5px;
-}
-
 textarea {
     resize: none;
     display: block;
+}
+
+#root {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  width: 100vw;
 }
 
 .main_container {
@@ -54,7 +57,7 @@ textarea {
     overflow-wrap: break-word;
 }
 
-#roomNav > div:hover, #selectedRoom {
+#roomNav > div:hover, .selectedRoom {
     cursor: pointer;
     background: rgb(0,123,255);
     background: radial-gradient(circle, rgba(0,123,255,1) 0%, rgba(70,159,255,1) 100%);

@@ -7,7 +7,7 @@ admin.initializeApp({
   credential: admin.credential.applicationDefault(),
   databaseURL: 'https://chatapp-58582.firebaseio.com'
 });
-;
+
 const db = admin.firestore();
 
 export async function addUser(user: admin.auth.UserInfo) {
@@ -39,7 +39,7 @@ export async function joinRoom(roomjoin: RoomJoin) {
     .catch( e => console.error(`${e} - Source ssfirebaseServer.ts`) );
 }
 
-export async function storeMessage(roomID, message) {
+export async function addMessage(roomID, message) {
   const roomRef = db.collection("rooms");
 
   const roomExists: boolean = await roomRef.doc(roomID).get().then( room => room.exists );

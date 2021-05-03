@@ -4,6 +4,7 @@ import socketio from "socket.io";
 import * as firebase from "./firebaseServer";
 import { Message, RoomJoin } from "../model/models";
 
+// Setup
 const app = express();
 const server = app.listen(3000);
 app.use(express.static('dist'));
@@ -23,6 +24,7 @@ io.on('connect', (socket) => {
         // Create room
         firebase.joinRoom(roomJoin)
             .catch( e => console.error(`${e} - Source server.ts`) );
+        
         // Check if socket is already in room
         if (Object.keys(io.sockets.adapter.sids[socket.id]).includes(roomID)) {
             return;
@@ -49,20 +51,17 @@ io.on('connect', (socket) => {
             message.sender = roomJoin.name;
             
             if(message.roomID == roomID) {
-                firebase.storeMessage(message.roomID, message)
+                firebase.addMessage(message.roomID, message)
                     .then( () => io.in(message.roomID).emit('newMessage', message))
                     .catch( e => console.error(`${e} - Source: server.ts`));    
             }
         });
     });
 
-        
-
     socket.on('login', (user) => {
         firebase.addUser(user).catch( e => console.error(`${e} - Source: server.ts`));
     });
 
-    // Disconnect
     socket.on('disconnect', () => {
         socket.removeAllListeners();
     });
