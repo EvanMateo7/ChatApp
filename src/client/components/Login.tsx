@@ -18,7 +18,7 @@ export const Login = (props) => {
       {
         props.user
         ? <User user={props.user} />
-        : <button id="googleSignInButton" onClick={googleLogin}>Google Sign In</button>
+        : <button className="btn btn-info" onClick={googleLogin}>Google Sign In</button>
       }
     </div>
   );

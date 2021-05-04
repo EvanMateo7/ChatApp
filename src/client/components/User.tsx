@@ -10,7 +10,7 @@ export const User = (props: UserProps) => {
     <div className="user_tag">
       <div className="user_picture">
       {
-        !props.user.photoURL
+        props.user.photoURL
         ? <img className="user_picture" src={props.user.photoURL}/>
         : <FontAwesomeIcon  icon={faLaugh} size="2x" />
       }
