@@ -13,12 +13,38 @@ textarea {
 
 .main_container {
     display: grid;
-    grid-template: "nav nav" 50px 
+    grid-template: "nav nav" minmax(70px, auto)
                    "rooms chat" 500px / 300px auto;
+    width: 100%;
+    margin: 10px;
 }
 
 .nav_container {
     grid-area: nav;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.user_tag {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  margin: 5px;
+}
+
+.user_picture {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 3rem;
+  width: 3rem;
+  border-radius: 50%;
+  margin: 5px;
+}
+
+.user_name {
+  display: inline-block;
 }
 
 .room_container {

@@ -14,12 +14,7 @@ ReactDOM.render(
 );
 
 const joinButton = (document.getElementById('joinButton') as HTMLInputElement);
-const googleSignInButton = (document.getElementById('googleSignInButton') as HTMLInputElement);
 let myRooms = {};
-
-googleSignInButton.addEventListener('click', () => {
-    firebase.googleLogin().then( user => {user ? socket.emit('login', user) : null} );
-});
 
 // Join Room
 joinButton.addEventListener('click', (e) => {
