@@ -13,24 +13,7 @@ ReactDOM.render(
   document.getElementById("root")
 );
 
-const joinButton = (document.getElementById('joinButton') as HTMLInputElement);
 let myRooms = {};
-
-// Join Room
-joinButton.addEventListener('click', (e) => {
-    const roomID = (document.getElementById('roomID') as HTMLInputElement).value;
-    const name = (document.getElementById('name') as HTMLInputElement).value;
-    const roomJoin: RoomJoin = {
-        roomID: roomID,
-        name: name
-    }
-
-    if (roomID.trim() == "" || name.trim() == "") {
-        alert("Room ID or Name is empty")
-        return;
-    }
-    socket.emit('joinRoom', roomJoin);
-});
 
 // Listeners
 socket.on('clients', (roomID, clients) => {

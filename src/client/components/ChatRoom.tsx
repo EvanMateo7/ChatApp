@@ -1,48 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Message, RoomJoin } from '../../model/models'
+import { Message } from '../../model/models'
 
-export interface ChatRoomsProps { rooms: string[], socket: SocketIOClient.Socket, currentRoom, joinRoom: Function }
-interface ChatRoomProps { roomID: string, socket: SocketIOClient.Socket }
+interface ChatRoomProps { roomID: string, socket: SocketIOClient.Socket, currentRoom, joinRoom: Function }
 
-export const ChatRooms = (props: ChatRoomsProps) => {
-
-  const joinRoom = (e) => {
-    const roomID = (document.getElementById('roomID') as HTMLInputElement).value;
-    const name = (document.getElementById('name') as HTMLInputElement).value;
-    const roomJoin: RoomJoin = {
-      roomID: roomID,
-      name: name
-    }
-
-    if (roomID.trim() == "" || name.trim() == "") {
-      alert("Room ID or Name is empty")
-      return;
-    }
-    props.socket.emit('joinRoom', roomJoin);
-  }
-
-  return (
-    <div className="chat_container">
-      <div id="joinContainer">
-        <div>
-          <label htmlFor="roomID">Room ID</label>
-          <input type="text" id="roomID"></input>
-        </div>
-
-        <div>
-          <label htmlFor="name">Your Name</label>
-          <input type="text" id="name"></input>
-        </div>
-
-        <button className="btn btn-primary btn-sm" id="joinButton" onClick={joinRoom}>Join</button>
-      </div>
-      <div id="canvas" className="flexRowCenter"></div>
-      <ChatRoom key={props.currentRoom} roomID={props.currentRoom} socket={props.socket} />
-    </div>
-  );
-}
-
-const ChatRoom = (props: ChatRoomProps) => {
+export const ChatRoom = (props: ChatRoomProps) => {
 
   const [messages, addMessages] = useState<Message[]>([]);
 
@@ -76,14 +37,16 @@ const ChatRoom = (props: ChatRoomProps) => {
   }
 
   return (
-    <div id="messageWallContainer" >
-      <div id="messageForm" className="flexRowCenter">
-        <textarea id="message" cols={30} rows={3}></textarea>
-        <div className="flexRowCenter">
-          <button id="sendButton" className="btn btn-primary btn-sm" onClick={sendMessage}>Send</button>
-        </div>
-      </div>
+    <div className="chat_container">
       <div className="messageWall">{messages.map(m => <ChatMessage roomID={m.roomID} sender={m.sender} message={m.message} />)}</div>
+      <form action="" role="form" className="my-3">
+        <div className="form-group flex flex-row">
+          <div className="input-group">
+            <textarea id="message" className="form-control" cols={30} rows={2}></textarea>
+          </div>
+          <button type="submit" className="btn btn-primary btn-sm" onClick={sendMessage}>Send</button>
+        </div>
+      </form>
     </div>
   );
 }

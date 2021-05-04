@@ -1,22 +1,17 @@
+html, body, #root, .main_container {
+  height: 100%;
+}
 
 textarea {
     resize: none;
     display: block;
 }
 
-#root {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-  width: 100vw;
-}
-
 .main_container {
     display: grid;
-    grid-template: "nav nav" minmax(70px, auto)
-                   "rooms chat" 500px / 300px auto;
-    width: 100%;
-    margin: 10px;
+    grid-template: "nav nav" 70px
+                   "rooms chat" auto / 15rem minmax(30rem, auto);
+    padding: 10px;
 }
 
 .nav_container {
@@ -49,15 +44,17 @@ textarea {
 
 .room_container {
     grid-area: rooms;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
 }
 
 .chat_container {
     grid-area: chat;
-}
-
-.flexRowCenter {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: auto;
 }
 
 .flexColumnCenter {
@@ -67,23 +64,22 @@ textarea {
     justify-items: center;
 }
 
-#roomNav {
+#room_list {
     display: flex;
     border: 1px solid gray;
     border-radius: 5px;
     flex-direction: column;
-    height: 100%;
     overflow: auto;
 }
 
-#roomNav > div {
+#room_list > div {
     /*flex-grow: 1;*/
     text-align: center;
     border-bottom: 2px solid transparent;
     overflow-wrap: break-word;
 }
 
-#roomNav > div:hover, .selectedRoom {
+#room_list > div:hover, .selectedRoom {
     cursor: pointer;
     background: var(--primary);
     color: white;
@@ -97,20 +93,8 @@ textarea {
     border-radius: 3px;
 }
 
-#joinContainer {
-    width: 400px;
-    display: grid;
-    grid-template: auto / auto auto;
-    grid-gap: 5px;
-    margin: 0 auto;
-}
-
 #login label {
     margin: 0;
-}
-
-#joinButton {
-    grid-column: span 2;
 }
 
 #canvas {
@@ -118,6 +102,9 @@ textarea {
 }
 
 .messageWall {
-    width: 500px;
-    margin: 0 auto;
+  display: flex;
+  flex-direction: column-reverse;
+  height: 100%;
+  width: 100%;
+  overflow: auto;
 }

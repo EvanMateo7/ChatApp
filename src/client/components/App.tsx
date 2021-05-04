@@ -1,7 +1,10 @@
+import firebase from "firebase";
 import React, { useState, useEffect } from "react";
-import { ChatRooms } from "./ChatRoom";
+import { ChatRoom } from "./ChatRoom";
 import { Login } from "./Login";
 import { RoomList } from "./RoomList";
+
+export const UserContext: React.Context<firebase.User> = React.createContext(null);
 
 export const App = (props) => {
 
@@ -10,13 +13,11 @@ export const App = (props) => {
   const [user, setUser] = useState();
 
   const joinRoom = (roomID) => {
-    console.error("rooms", rooms)
     setRooms((rooms) => [...rooms, roomID])
     setCurrentRoom(roomID)
   }
 
   const setRoom = (newRoomID) => {
-    console.error("new room", newRoomID)
     setCurrentRoom(newRoomID)
   }
 
@@ -29,12 +30,22 @@ export const App = (props) => {
   }, [])
 
   return (
-    <div className="main_container">
-      <div className="nav_container">
-        <Login user={user} setUser={setUser} socket={props.socket} />
+    <UserContext.Provider value={user}>
+      <div className="main_container">
+      {
+        user
+        ? (
+          <React.Fragment>
+            <div className="nav_container">
+              <Login user={user} setUser={setUser} socket={props.socket} />
+            </div>
+            <RoomList socket={props.socket} rooms={rooms} currentRoom={currentRoom} setCurrentRoom={setRoom} />
+            <ChatRoom socket={props.socket} roomID={currentRoom} currentRoom={currentRoom} joinRoom={joinRoom} />
+          </React.Fragment>
+        )
+        : <Login user={user} setUser={setUser} socket={props.socket} />
+      }
       </div>
-      <RoomList rooms={rooms} currentRoom={currentRoom} setCurrentRoom={setRoom} />
-      <ChatRooms rooms={rooms} socket={props.socket} currentRoom={currentRoom} joinRoom={joinRoom} />
-    </div>
+    </UserContext.Provider>
   );
 }
