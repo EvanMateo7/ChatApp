@@ -9,14 +9,15 @@ export const ChatRoom = (props: ChatRoomProps) => {
 
   useEffect(() => {
     props.socket.on('newMessage', (message: Message) => {
-      addMessages((messages) => [...messages, message]);
+      addMessages((messages) => [message, ...messages]);
       console.error("new message received", message, messages)
     });
 
     return () => props.socket.off('newMessage');
   }, [props.roomID])
 
-  const sendMessage = () => {
+  const sendMessage = (e) => {
+    e.preventDefault();
     const message = (document.getElementById('message') as HTMLInputElement);
     if (message.value.trim() == '') {
       alert("message is empty")
@@ -39,12 +40,14 @@ export const ChatRoom = (props: ChatRoomProps) => {
   return (
     <div className="chat_container">
       <div className="messageWall">{messages.map(m => <ChatMessage roomID={m.roomID} sender={m.sender} message={m.message} />)}</div>
-      <form action="" role="form" className="my-3">
-        <div className="form-group flex flex-row">
+      <form className="my-3" onSubmit={sendMessage}>
+        <div className="flex flex-row">
           <div className="input-group">
             <textarea id="message" className="form-control" cols={30} rows={2}></textarea>
+            <div className="input-group-append">
+              <input type="submit" className="btn btn-primary btn-sm" value="Send"></input>
+            </div>
           </div>
-          <button type="submit" className="btn btn-primary btn-sm" onClick={sendMessage}>Send</button>
         </div>
       </form>
     </div>

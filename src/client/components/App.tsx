@@ -40,7 +40,7 @@ export const App = (props) => {
               <Login user={user} setUser={setUser} socket={props.socket} />
             </div>
             <RoomList socket={props.socket} rooms={rooms} currentRoom={currentRoom} setCurrentRoom={setRoom} />
-            <ChatRoom socket={props.socket} roomID={currentRoom} currentRoom={currentRoom} joinRoom={joinRoom} />
+            <ChatRoom key={currentRoom} socket={props.socket} roomID={currentRoom} currentRoom={currentRoom} joinRoom={joinRoom} />
           </React.Fragment>
         )
         : <Login user={user} setUser={setUser} socket={props.socket} />
