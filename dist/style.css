@@ -85,8 +85,7 @@ textarea {
 
 #roomNav > div:hover, .selectedRoom {
     cursor: pointer;
-    background: rgb(0,123,255);
-    background: radial-gradient(circle, rgba(0,123,255,1) 0%, rgba(70,159,255,1) 100%);
+    background: var(--primary);
     color: white;
     font-weight: bold;
 }
