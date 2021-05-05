@@ -14,6 +14,7 @@ export const RoomList = (props: RoomListProps) => {
   const user = useContext(UserContext);
 
   const joinRoom = (e) => {
+    e.preventDefault();
     const roomID = (document.getElementById('roomID') as HTMLInputElement).value;
     const roomJoin: RoomJoin = {
       roomID: roomID,
@@ -30,12 +31,12 @@ export const RoomList = (props: RoomListProps) => {
   return (
     <div className="room_container">
       {"Hello, " + user.displayName}
-      <form className="my-3">
+      <form className="my-3" onSubmit={joinRoom}>
         <div className="form-group">
           <label htmlFor="roomID">Room ID</label>
           <input type="text" className="form-control" id="roomID"></input>
         </div>
-      <button className="btn btn-primary btn-sm w-100" onClick={joinRoom}>Join</button>
+        <input type="submit" className="btn btn-primary btn-sm w-100" value="Join"></input>
       </form>
       {props.rooms && props.rooms.length > 0 &&
         <div id="room_list" className="list-group">
