@@ -1,55 +1,99 @@
-import React, { useContext } from "react";
+import Avatar from "@material-ui/core/Avatar";
+import Box from "@material-ui/core/Box";
+import Button from "@material-ui/core/Button";
+import ImageIcon from '@material-ui/icons/Image';
+import FormControl from "@material-ui/core/FormControl";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemAvatar from "@material-ui/core/ListItemAvatar";
+import ListItemText from "@material-ui/core/ListItemText";
+import { makeStyles } from "@material-ui/core/styles";
+import TextField from "@material-ui/core/TextField";
+import React, { useContext, useState } from "react";
 import { RoomJoin } from "../../model/models";
 import { UserContext } from "./App";
+import ListSubheader from "@material-ui/core/ListSubheader";
+import Divider from "@material-ui/core/Divider";
 
-interface RoomListProps {
-  socket: SocketIOClient.Socket, 
-  rooms: string[], 
-  currentRoom: string, 
+export interface RoomListProps {
+  socket: SocketIOClient.Socket,
+  rooms: string[],
+  currentRoom: string,
   setCurrentRoom: Function
 }
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: "flex",
+    flexDirection: "column",
+    height: "100%",
+    padding: 15,
+  },
+  roomForm: {
+    paddingTop: 15,
+    paddingBottom: 15,
+  }
+}));
+
 export const RoomList = (props: RoomListProps) => {
 
+  const classes = useStyles();
   const user = useContext(UserContext);
+  const [roomIDInput, setRoomIDInput] = useState("");
 
-  const joinRoom = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    const roomID = (document.getElementById('roomID') as HTMLInputElement).value;
-    const roomJoin: RoomJoin = {
-      roomID: roomID,
-      name: user.displayName
-    }
-
-    if (roomID.trim() == "") {
+    if (roomIDInput.trim() == "") {
       alert("Room ID or Name is empty")
       return;
     }
-    props.socket.emit('joinRoom', roomJoin);
+
+    const roomJoin: RoomJoin = {
+      roomID: roomIDInput.trim(),
+      name: user.displayName
+    }
+
+    props.socket.emit("joinRoom", roomJoin);
+    setRoomIDInput("");
+    return false;
+  }
+
+  const handleRoomIDChange = (e) => {
+    setRoomIDInput(e.target.value);
   }
 
   return (
-    <div className="room_container">
-      {"Hello, " + user.displayName}
-      <form className="my-3" onSubmit={joinRoom}>
-        <div className="form-group">
-          <label htmlFor="roomID">Room ID</label>
-          <input type="text" className="form-control" id="roomID"></input>
-        </div>
-        <input type="submit" className="btn btn-primary btn-sm w-100" value="Join"></input>
+    <Box className={classes.root}>
+      <form className={classes.roomForm} onSubmit={handleSubmit} noValidate>
+        <FormControl>
+          <TextField id="roomID" margin="normal" label="Room ID" InputLabelProps={{ shrink: true, }} variant="outlined" 
+          value={roomIDInput} onChange={handleRoomIDChange}/>
+          <Button type="submit" variant="contained" color="primary">Join</Button>
+        </FormControl>
       </form>
+      <Divider variant="middle" />
       {props.rooms && props.rooms.length > 0 &&
-        <div id="room_list" className="list-group">
-          {props.rooms.map(roomID => 
-            <a 
-              href="#"
-              id={roomID} 
-              className={"list-group-item list-group-item-action text-center " + (props.currentRoom == roomID ? 'selectedRoom' : '')} 
-              onClick={() => props.setCurrentRoom(roomID)}>
-                {roomID}
-            </a>)}
-        </div>
+        <List
+          component="nav"
+          subheader={
+            <ListSubheader>
+              Rooms
+            </ListSubheader>
+          }>
+          {props.rooms.map(roomID =>
+            <>
+              <ListItem button onClick={() => props.setCurrentRoom(roomID)} selected={ roomID === props.currentRoom }>
+                <ListItemAvatar>
+                  <Avatar>
+                    <ImageIcon />
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText primary={roomID} />
+              </ListItem>
+            </>
+          )}
+        </List>
       }
-    </div>
+    </Box>
   );
 }

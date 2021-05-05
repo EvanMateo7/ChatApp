@@ -1,21 +1,39 @@
-import { faLaugh } from "@fortawesome/free-regular-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import MoodIcon from '@material-ui/icons/Mood';
+import Typography from "@material-ui/core/Typography";
 import firebase from "firebase";
 import React from "react";
+import Avatar from '@material-ui/core/Avatar';
+import { makeStyles } from '@material-ui/core/styles';
 
 export interface UserProps { user: firebase.User }
 
+const useStyles = makeStyles((theme) => ({
+  userTag: {
+    display: "inline-flex",
+    justifyContent: "center",
+    alignItems: "center",
+    margin: 5,
+  },
+  userAvatar: {
+    display: "flex",
+    padding: 8,
+  },
+}));
+
 export const User = (props: UserProps) => {
+  
+  const classes = useStyles();
+
   return (
-    <div className="user_tag">
-      <div className="user_picture">
+    <div className={classes.userTag}>
+      <div className={classes.userAvatar}>
       {
         props.user.photoURL
-        ? <img className="user_picture" src={props.user.photoURL}/>
-        : <FontAwesomeIcon  icon={faLaugh} size="2x" />
+        ? <Avatar alt={props.user.displayName} src={props.user.photoURL} />
+        : <MoodIcon></MoodIcon>
       }
       </div>
-      <div className="user_name">{props.user.displayName}</div>
+      <Typography>{props.user.displayName}</Typography>
     </div>
   );
 }

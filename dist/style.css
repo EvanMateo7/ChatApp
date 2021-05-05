@@ -2,89 +2,8 @@ html, body, #root, .main_container {
   height: 100%;
 }
 
-textarea {
-    resize: none;
-    display: block;
-}
-
-.main_container {
-    display: grid;
-    grid-template: "nav nav" 70px
-                   "rooms chat" auto / 15rem minmax(30rem, auto);
-    padding: 10px;
-    gap: 10px;
-}
-
-.nav_container {
-    grid-area: nav;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-}
-
-.user_tag {
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  margin: 5px;
-}
-
-.user_picture {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 3rem;
-  width: 3rem;
-  border-radius: 50%;
-  margin: 5px;
-}
-
-.user_name {
-  display: inline-block;
-}
-
-.room_container {
-    grid-area: rooms;
-    display: flex;
-    flex-direction: column;
-    overflow: auto;
-}
-
-.chat_container {
-    grid-area: chat;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    overflow: auto;
-}
-
-.flexColumnCenter {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    justify-items: center;
-}
-
-#room_list {
-    display: flex;
-    border: 1px solid gray;
-    border-radius: 5px;
-    flex-direction: column;
-    overflow: auto;
-}
-
-#room_list > div {
-    /*flex-grow: 1;*/
-    text-align: center;
-    border-bottom: 2px solid transparent;
-    overflow-wrap: break-word;
-}
-
-#room_list > div:hover, .selectedRoom {
-    cursor: pointer;
-    background: var(--primary);
-    color: white;
-    font-weight: bold;
+body {
+  margin: 0px;
 }
 
 .message {
@@ -94,17 +13,6 @@ textarea {
     border-radius: 3px;
 }
 
-#login label {
-    margin: 0;
-}
-
 #canvas {
     margin: 10px;
-}
-
-.messageWall {
-  display: flex;
-  flex-direction: column-reverse;
-  width: 100%;
-  overflow: auto;
 }
