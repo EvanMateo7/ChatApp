@@ -8,7 +8,7 @@ import InputBase from "@material-ui/core/InputBase";
 import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
 
-interface ChatRoomProps { roomID: string, socket: SocketIOClient.Socket, currentRoom: string }
+interface ChatRoomProps { roomID: string, socket: SocketIOClient.Socket }
 
 const useStyles = makeStyles((theme) => ({
   chatRoom: {

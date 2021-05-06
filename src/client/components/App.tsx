@@ -68,7 +68,7 @@ export const App = (props: any) => {
             </Toolbar>
           </AppBar>
 
-          <ChatRoom key={currentRoom} socket={props.socket} roomID={currentRoom} currentRoom={currentRoom} />
+          <ChatRoom key={currentRoom} socket={props.socket} roomID={currentRoom} />
         </Box>
 
         <Drawer anchor="left" variant="persistent" open={roomListIsOpen}>
