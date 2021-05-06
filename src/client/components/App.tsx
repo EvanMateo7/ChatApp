@@ -44,10 +44,10 @@ export const App = (props: any) => {
 
   const [user, setUser] = useState(null);
   const [currentRoom, rooms, setCurrentRoom, joinRoom] = useChatRoom(props.socket, user);
-  const [roomListIsOpen, setRoomListIsOpen] = useState(false);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const toggleRoomList = () => {
-    setRoomListIsOpen((open) => !open);
+    setIsDrawerOpen((open) => !open);
   }
 
   return (
@@ -55,7 +55,7 @@ export const App = (props: any) => {
       <MuiThemeProvider theme={theme}>
         <CssBaseline />
 
-        <Box display="flex" flexDirection="column" height="100%" className={roomListIsOpen ? classes.shifted : undefined}>
+        <Box display="flex" flexDirection="column" height="100%" className={isDrawerOpen ? classes.shifted : undefined}>
           <AppBar
             position="static"
             className={classes.appBar}>
@@ -71,7 +71,7 @@ export const App = (props: any) => {
           <ChatRoom key={currentRoom} socket={props.socket} roomID={currentRoom} />
         </Box>
 
-        <Drawer anchor="left" variant="persistent" open={roomListIsOpen}>
+        <Drawer anchor="left" variant="persistent" open={isDrawerOpen}>
           <div ref={drawerRef}>
             <Box display="flex" justifyContent="flex-end">
               <IconButton onClick={toggleRoomList}>
