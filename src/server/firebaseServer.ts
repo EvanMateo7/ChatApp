@@ -21,7 +21,7 @@ export async function addUser(user: admin.auth.UserInfo) {
       name: user.displayName
     })
     .then( () => console.log(`New user created with UID ${user.uid}`))
-    .catch( e => console.error(`${e} - Source: sfirebaseServer.ts`));;
+    .catch( e => console.error(`${e} - source: firebaseServer.ts - addUser`));;
   }
   else {
     console.log(`User ${user.uid} already exists.`);
@@ -31,12 +31,9 @@ export async function addUser(user: admin.auth.UserInfo) {
 export async function joinRoom(roomjoin: RoomJoin) {
   const roomRef = db.collection("rooms");
   
-  await roomRef.doc(roomjoin.roomID).set({users: admin.firestore.FieldValue.arrayUnion(roomjoin.name)}, {merge: true})
-    .then( () => console.log(`Room created with ID: ${roomjoin.roomID}`))
-    .catch( e => console.error(`${e} - Source ssfirebaseServer.ts`) );
- 
-  roomRef.doc(roomjoin.roomID).collection("messages").doc("0").create({})
-    .catch( e => console.error(`${e} - Source ssfirebaseServer.ts`) );
+  return roomRef.doc(roomjoin.roomID).set({users: admin.firestore.FieldValue.arrayUnion(roomjoin.name)}, {merge: true})
+    .then( () => console.log(`User "${roomjoin.name}" joined room ID: ${roomjoin.roomID}`))
+    .catch( e => console.error(`${e} - source firebaseServer.ts - joinRoom`) );
 }
 
 export async function addMessage(roomID: string, message: Message) {
@@ -46,7 +43,7 @@ export async function addMessage(roomID: string, message: Message) {
 
   if(roomExists) {
     roomRef.doc(roomID).collection("messages").doc().create(message)
-      .catch( e => console.error(`${e} - Source sssfirebaseServer.ts`) );
+      .catch( e => console.error(`${e} - source firebaseServer.ts - addMessage`) );
     console.log(`Message saved: ${JSON.stringify(message)}`);
   }
 }

@@ -16,6 +16,7 @@ import { MuiThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import blue from '@material-ui/core/colors/blue';
 import Box from "@material-ui/core/Box";
+import { useChatRoom } from "../chatService";
 
 export const UserContext = React.createContext<firebase.User | null>(null);
 
@@ -41,31 +42,13 @@ export const App = (props: any) => {
     },
   }))();
 
-  const [currentRoom, setCurrentRoom] = useState("");
-  const [rooms, setRooms] = useState([]);
   const [user, setUser] = useState(null);
+  const [currentRoom, rooms, setCurrentRoom, joinRoom] = useChatRoom(props.socket, user);
   const [roomListIsOpen, setRoomListIsOpen] = useState(false);
 
   const toggleRoomList = () => {
     setRoomListIsOpen((open) => !open);
   }
-
-  const joinRoom = (roomID: string) => {
-    setRooms((rooms) => [...rooms, roomID] as any)
-    setCurrentRoom(roomID)
-  }
-
-  const setRoom = (newRoomID: string) => {
-    setCurrentRoom(newRoomID)
-  }
-
-  useEffect(() => {
-    props.socket.on('newRoom', (newRoomID: string) => {
-      joinRoom(newRoomID);
-    });
-
-    return () => props.socket.off('newRoom');
-  }, [])
 
   return (
     <UserContext.Provider value={user}>
@@ -85,7 +68,7 @@ export const App = (props: any) => {
             </Toolbar>
           </AppBar>
 
-          <ChatRoom key={currentRoom} socket={props.socket} roomID={currentRoom} currentRoom={currentRoom} joinRoom={joinRoom} />
+          <ChatRoom key={currentRoom} socket={props.socket} roomID={currentRoom} currentRoom={currentRoom} />
         </Box>
 
         <Drawer anchor="left" variant="persistent" open={roomListIsOpen}>
@@ -96,7 +79,7 @@ export const App = (props: any) => {
               </IconButton>
             </Box>
           </div>
-          <RoomList socket={props.socket} rooms={rooms} currentRoom={currentRoom} setCurrentRoom={setRoom} />
+          <RoomList socket={props.socket} currentRoom={currentRoom} rooms={rooms} setCurrentRoom={setCurrentRoom} joinRoom={joinRoom} />
         </Drawer>
 
       </MuiThemeProvider>

@@ -21,45 +21,46 @@ io.on('connect', (socket) => {
     socket.on('joinRoom', (roomJoin: RoomJoin) => {
         const roomID = roomJoin.roomID;
         
-        // Create room
-        firebase.joinRoom(roomJoin)
-            .catch( e => console.error(`${e} - Source server.ts`) );
-        
         // Check if socket is already in room
         if (Object.keys(io.sockets.adapter.sids[socket.id]).includes(roomID)) {
             return;
         }
+        
+        // Create and join room
+        firebase.joinRoom(roomJoin)
+          .then(() => {
+            socket.join(roomID);
 
-        // Join room
-        socket.join(roomID);
-
+            // Emit to self all my rooms
+            io.to(socket.id).emit('myRooms', io.sockets.adapter.sids[socket.id]);
+          })
+          .catch( e => console.error(`${e} - source server.ts - on joinRoom`) );
+        
         // Get clients
         io.in(roomID).clients((error: any, clients: any) => {
 
             // Emit to everyone in room including emitter
-            io.to(roomID).emit('clients', roomID, clients);      
-            
-            // Emit to self all my rooms
-            io.to(socket.id).emit('myRooms', io.sockets.adapter.sids[socket.id]);
+            io.to(roomID).emit('clients', roomID, clients);
 
             // Emit to self current room
             io.to(socket.id).emit('newRoom', roomID);
         });
+    });
 
-        // Listeners in room
-        socket.in(roomID).on('message', (message: Message) => {
-            message.sender = roomJoin.name;
-            
-            if(message.roomID == roomID) {
-                firebase.addMessage(message.roomID, message)
-                    .then( () => io.in(message.roomID).emit('newMessage', message))
-                    .catch( e => console.error(`${e} - Source: server.ts`));    
-            }
-        });
+    socket.on('message', (message: Message) => {
+      firebase.addMessage(message.roomID, message)
+          .then(() => io.in(message.roomID).emit('receiveMessage', message))
+          .catch(e => console.error(`${e} - source: server.ts - on message`));    
+    });
+
+    socket.on('leaveRoom', (roomID: string) => {
+      socket.leave(roomID, () => {
+        console.error("LEFT ROOM ", roomID);
+      });
     });
 
     socket.on('login', (user) => {
-        firebase.addUser(user).catch( e => console.error(`${e} - Source: server.ts`));
+        firebase.addUser(user).catch( e => console.error(`${e} - source: server.ts - on login`));
     });
 
     socket.on('disconnect', () => {

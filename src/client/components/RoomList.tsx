@@ -17,9 +17,10 @@ import Divider from "@material-ui/core/Divider";
 
 export interface RoomListProps {
   socket: SocketIOClient.Socket,
-  rooms: string[],
   currentRoom: string,
-  setCurrentRoom: Function
+  rooms: string[],
+  setCurrentRoom: Function,
+  joinRoom: Function,
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -47,13 +48,8 @@ export const RoomList = (props: RoomListProps) => {
       alert("Room ID is empty")
       return;
     }
-
-    const roomJoin: RoomJoin = {
-      roomID: roomIDInput.trim(),
-      name: user.displayName || "unknown"
-    }
-
-    props.socket.emit("joinRoom", roomJoin);
+    
+    props.joinRoom(roomIDInput.trim());
     setRoomIDInput("");
     return false;
   }

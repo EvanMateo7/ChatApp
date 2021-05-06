@@ -26,9 +26,9 @@ socket.on('clients', (roomID: string, clients: any) => {
 
 socket.on('myRooms', (rooms: any) => {
     myRooms = rooms;
-    console.log(rooms);
+    console.log("YOUR ROOMS", rooms);
 });
 
 socket.on('error', (error: any) => {
-    console.error(error.message);
+    console.log(error.message);
 })
