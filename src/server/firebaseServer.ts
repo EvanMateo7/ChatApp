@@ -1,6 +1,6 @@
 import * as admin from "firebase-admin";
 import { UserRefreshClient } from "google-auth-library";
-import { RoomJoin } from "../model/models";
+import { Message, RoomJoin } from "../models";
 
 admin.initializeApp({
   // GOOGLE_APPLICATION_CREDENTIALS environment variable
@@ -39,7 +39,7 @@ export async function joinRoom(roomjoin: RoomJoin) {
     .catch( e => console.error(`${e} - Source ssfirebaseServer.ts`) );
 }
 
-export async function addMessage(roomID, message) {
+export async function addMessage(roomID: string, message: Message) {
   const roomRef = db.collection("rooms");
 
   const roomExists: boolean = await roomRef.doc(roomID).get().then( room => room.exists );

@@ -10,7 +10,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import React, { useContext, useState } from "react";
-import { RoomJoin } from "../../model/models";
+import { RoomJoin } from "../../models";
 import { UserContext } from "./App";
 import ListSubheader from "@material-ui/core/ListSubheader";
 import Divider from "@material-ui/core/Divider";
@@ -41,16 +41,16 @@ export const RoomList = (props: RoomListProps) => {
   const user = useContext(UserContext);
   const [roomIDInput, setRoomIDInput] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: any) => {
     e.preventDefault();
-    if (roomIDInput.trim() == "") {
-      alert("Room ID or Name is empty")
+    if (user == null || roomIDInput.trim() == "") {
+      alert("Room ID is empty")
       return;
     }
 
     const roomJoin: RoomJoin = {
       roomID: roomIDInput.trim(),
-      name: user.displayName
+      name: user.displayName || "unknown"
     }
 
     props.socket.emit("joinRoom", roomJoin);
@@ -58,7 +58,7 @@ export const RoomList = (props: RoomListProps) => {
     return false;
   }
 
-  const handleRoomIDChange = (e) => {
+  const handleRoomIDChange = (e: any) => {
     setRoomIDInput(e.target.value);
   }
 

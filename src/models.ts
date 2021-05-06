@@ -1,6 +1,6 @@
 
 export interface Message {
-    roomID?: string
+    roomID: string
     sender: string,
     message: string
 }

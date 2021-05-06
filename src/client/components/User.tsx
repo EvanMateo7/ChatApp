@@ -28,8 +28,8 @@ export const User = (props: UserProps) => {
     <div className={classes.userTag}>
       <div className={classes.userAvatar}>
       {
-        props.user.photoURL
-        ? <Avatar alt={props.user.displayName} src={props.user.photoURL} />
+        (props.user && props.user.photoURL)
+        ? <Avatar alt={props.user.displayName!} src={props.user.photoURL!} />
         : <MoodIcon></MoodIcon>
       }
       </div>

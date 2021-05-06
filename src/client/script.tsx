@@ -1,5 +1,5 @@
 import * as firebase from "./firebaseClient";
-import { Message, RoomJoin } from "../model/models";
+import { Message, RoomJoin } from "../models";
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import { App } from "./components/App";
@@ -16,7 +16,7 @@ ReactDOM.render(
 let myRooms = {};
 
 // Listeners
-socket.on('clients', (roomID, clients) => {
+socket.on('clients', (roomID: string, clients: any) => {
     const data = {
         roomID,
         clients
@@ -24,11 +24,11 @@ socket.on('clients', (roomID, clients) => {
     console.log(data);
 });
 
-socket.on('myRooms', (rooms) => {
+socket.on('myRooms', (rooms: any) => {
     myRooms = rooms;
     console.log(rooms);
 });
 
-socket.on('error', (error) => {
+socket.on('error', (error: any) => {
     console.error(error.message);
 })

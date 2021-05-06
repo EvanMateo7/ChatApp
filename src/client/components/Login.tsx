@@ -5,7 +5,7 @@ import React from "react";
 import * as firebase from "../firebaseClient";
 import { User } from "./User";
 
-export const Login = (props) => {
+export const Login = (props: any) => {
 
   const googleLogin = () => {
     firebase.googleLogin().then( user => {

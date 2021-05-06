@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import Box from '@material-ui/core/Box';
 import SendIcon from '@material-ui/icons/Send';
-import { Message } from '../../model/models'
+import { Message } from '../../models'
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import Paper from "@material-ui/core/Paper";
 import InputBase from "@material-ui/core/InputBase";
 import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
 
-interface ChatRoomProps { roomID: string, socket: SocketIOClient.Socket, currentRoom, joinRoom: Function }
+interface ChatRoomProps { roomID: string, socket: SocketIOClient.Socket, currentRoom: string, joinRoom: Function }
 
 const useStyles = makeStyles((theme) => ({
   chatRoom: {
@@ -52,7 +52,7 @@ export const ChatRoom = (props: ChatRoomProps) => {
       console.error("new message received", message, messages)
     });
 
-    return () => props.socket.off('newMessage');
+    return () => { props.socket.off('newMessage') };
   }, [props.roomID])
 
   const sendMessage = () => {
@@ -65,7 +65,7 @@ export const ChatRoom = (props: ChatRoomProps) => {
       return;
     }
     const newMessage: Message = {
-      sender: null,
+      sender: "test",
       message: messageInput.trim(),
       roomID: props.roomID
     }
@@ -74,20 +74,20 @@ export const ChatRoom = (props: ChatRoomProps) => {
     setMessageInput("");
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: any) => {
     e.preventDefault();
     sendMessage();
     return false;
   }
 
-  const handleKeyDown = (e) => {
+  const handleKeyDown = (e: any) => {
     if (!e.shiftKey && e.keyCode === 13) {
       e.preventDefault();
       sendMessage();
     }
   };
 
-  const handleMessageChange = (e) => {
+  const handleMessageChange = (e: any) => {
     setMessageInput(e.target.value);
   }
 
@@ -98,7 +98,7 @@ export const ChatRoom = (props: ChatRoomProps) => {
       </Box>
       <Paper className={classes.chatForm} color="primary" elevation={4} component="form" onSubmit={handleSubmit}>
         <InputBase id="message" className={classes.input} multiline rows={4} placeholder="Message" onKeyDown={handleKeyDown}
-        value={messageInput} onChange={handleMessageChange}/>
+          value={messageInput} onChange={handleMessageChange} />
         <Divider orientation="vertical" />
         <Button type="submit" className={classes.sendBtn} color="primary"><SendIcon></SendIcon></Button>
       </Paper>

@@ -2,7 +2,7 @@
 import express from "express";
 import socketio from "socket.io";
 import * as firebase from "./firebaseServer";
-import { Message, RoomJoin } from "../model/models";
+import { Message, RoomJoin } from "../models";
 
 // Setup
 const app = express();
@@ -34,7 +34,7 @@ io.on('connect', (socket) => {
         socket.join(roomID);
 
         // Get clients
-        io.in(roomID).clients((error, clients) => {
+        io.in(roomID).clients((error: any, clients: any) => {
 
             // Emit to everyone in room including emitter
             io.to(roomID).emit('clients', roomID, clients);      

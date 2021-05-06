@@ -17,7 +17,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import blue from '@material-ui/core/colors/blue';
 import Box from "@material-ui/core/Box";
 
-export const UserContext = React.createContext(null);
+export const UserContext = React.createContext<firebase.User | null>(null);
 
 const theme = createMuiTheme({
   palette: {
@@ -26,8 +26,8 @@ const theme = createMuiTheme({
   },
 });
 
-export const App = (props) => {
-  const drawerRef = useRef(null);
+export const App = (props: any) => {
+  const drawerRef = useRef<HTMLDivElement>(null);
   const classes = makeStyles((theme) => ({
     appBar: {
       minHeight: 70,
@@ -41,26 +41,26 @@ export const App = (props) => {
     },
   }))();
 
-  const [currentRoom, setCurrentRoom] = useState();
+  const [currentRoom, setCurrentRoom] = useState("");
   const [rooms, setRooms] = useState([]);
-  const [user, setUser] = useState();
+  const [user, setUser] = useState(null);
   const [roomListIsOpen, setRoomListIsOpen] = useState(false);
 
   const toggleRoomList = () => {
     setRoomListIsOpen((open) => !open);
   }
 
-  const joinRoom = (roomID) => {
-    setRooms((rooms) => [...rooms, roomID])
+  const joinRoom = (roomID: string) => {
+    setRooms((rooms) => [...rooms, roomID] as any)
     setCurrentRoom(roomID)
   }
 
-  const setRoom = (newRoomID) => {
+  const setRoom = (newRoomID: string) => {
     setCurrentRoom(newRoomID)
   }
 
   useEffect(() => {
-    props.socket.on('newRoom', (newRoomID) => {
+    props.socket.on('newRoom', (newRoomID: string) => {
       joinRoom(newRoomID);
     });
 
@@ -72,7 +72,7 @@ export const App = (props) => {
       <MuiThemeProvider theme={theme}>
         <CssBaseline />
 
-        <Box display="flex" flexDirection="column" height="100%" className={roomListIsOpen ? classes.shifted : null}>
+        <Box display="flex" flexDirection="column" height="100%" className={roomListIsOpen ? classes.shifted : undefined}>
           <AppBar
             position="static"
             className={classes.appBar}>
