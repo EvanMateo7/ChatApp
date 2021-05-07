@@ -6,10 +6,12 @@ import { makeStyles } from "@material-ui/core/styles";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import firebase from "firebase";
-import React, { useState, useEffect, useRef } from "react";
+import { useCurrentUser } from "../firebaseClient";
+import React, { useState, useRef } from "react";
 import { ChatRoom } from "./ChatRoom";
 import { Login } from "./Login";
 import { RoomList } from "./RoomList";
+import { User } from "./User";
 import Drawer from "@material-ui/core/Drawer";
 import { createMuiTheme } from "@material-ui/core/styles";
 import { MuiThemeProvider } from "@material-ui/core/styles";
@@ -23,7 +25,10 @@ export const UserContext = React.createContext<firebase.User | null>(null);
 const theme = createMuiTheme({
   palette: {
     type: 'dark',
-    primary: blue
+    primary: blue,
+    secondary: {
+      main: "#dc6600",
+    },
   },
 });
 
@@ -42,7 +47,7 @@ export const App = (props: any) => {
     },
   }))();
 
-  const [user, setUser] = useState(null);
+  const [user, logout] = useCurrentUser();
   const [currentRoom, rooms, setCurrentRoom, joinRoom] = useChatRoom(props.socket, user);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
@@ -64,7 +69,11 @@ export const App = (props: any) => {
               <Typography variant="h6" align="center" className={classes.title}>
                 ChatApp
               </Typography>
-              <Login user={user} setUser={setUser} socket={props.socket} />
+              {
+                !user
+                ? <Login socket={props.socket} />
+                : <User user={user} logout={logout} />
+              }
             </Toolbar>
           </AppBar>
 
