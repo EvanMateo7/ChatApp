@@ -1,24 +1,23 @@
 import AppBar from "@material-ui/core/AppBar";
+import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import blue from '@material-ui/core/colors/blue';
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Drawer from "@material-ui/core/Drawer";
 import IconButton from "@material-ui/core/IconButton";
-import { makeStyles } from "@material-ui/core/styles";
+import { createMuiTheme, makeStyles, MuiThemeProvider } from "@material-ui/core/styles";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import firebase from "firebase";
+import React, { useRef, useState } from "react";
+import { useChatRoom } from "../chatService";
 import { useCurrentUser } from "../firebaseClient";
-import React, { useState, useRef } from "react";
 import { ChatRoom } from "./ChatRoom";
 import { Login } from "./Login";
 import { RoomList } from "./RoomList";
 import { User } from "./User";
-import Drawer from "@material-ui/core/Drawer";
-import { createMuiTheme } from "@material-ui/core/styles";
-import { MuiThemeProvider } from "@material-ui/core/styles";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import blue from '@material-ui/core/colors/blue';
-import Box from "@material-ui/core/Box";
-import { useChatRoom } from "../chatService";
+
 
 export const UserContext = React.createContext<firebase.User | null>(null);
 

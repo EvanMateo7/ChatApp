@@ -1,6 +1,4 @@
-import * as firebase from "./firebaseClient";
-import { Message, RoomJoin } from "../models";
-import React, { useState } from "react";
+import React from "react";
 import ReactDOM from "react-dom";
 import { App } from "./components/App";
 

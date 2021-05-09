@@ -1,6 +1,6 @@
 import MoodIcon from '@material-ui/icons/Mood';
-import Button from "@material-ui/core/Button/Button";
-import Popover from "@material-ui/core/Popover/Popover";
+import Button from "@material-ui/core/Button";
+import Popover from "@material-ui/core/Popover";
 import Typography from "@material-ui/core/Typography";
 import firebase from "firebase";
 import React, { useState } from "react";

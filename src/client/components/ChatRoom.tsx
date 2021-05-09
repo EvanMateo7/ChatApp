@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Box from '@material-ui/core/Box';
 import SendIcon from '@material-ui/icons/Send';
 import { Message } from '../../models'
-import makeStyles from "@material-ui/core/styles/makeStyles";
+import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import InputBase from "@material-ui/core/InputBase";
 import Button from "@material-ui/core/Button";

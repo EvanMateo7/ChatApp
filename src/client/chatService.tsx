@@ -1,7 +1,5 @@
 import firebase from "firebase";
 import { useState } from "react";
-import { RoomJoin } from "../models";
-
 
 export const useChatRoom = (socket: SocketIOClient.Socket, user: firebase.User | null) => {
   const [currentRoom, setCurrentRoom] = useState("");
