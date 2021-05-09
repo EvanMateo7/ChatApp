@@ -1,7 +1,8 @@
 import firebase from "firebase";
 import { useState } from "react";
+import { Socket } from "socket.io";
 
-export const useChatRoom = (socket: SocketIOClient.Socket, user: firebase.User | null) => {
+export const useChatRoom = (socket: Socket, user: firebase.User | null) => {
   const [currentRoom, setCurrentRoom] = useState("");
   const [rooms, setRooms] = useState([]);
 

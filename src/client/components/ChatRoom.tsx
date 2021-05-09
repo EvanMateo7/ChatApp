@@ -7,8 +7,9 @@ import Paper from "@material-ui/core/Paper";
 import InputBase from "@material-ui/core/InputBase";
 import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
+import { Socket } from "socket.io";
 
-interface ChatRoomProps { roomID: string, socket: SocketIOClient.Socket }
+interface ChatRoomProps { roomID: string, socket: Socket }
 
 const useStyles = makeStyles((theme) => ({
   chatRoom: {
@@ -47,12 +48,13 @@ export const ChatRoom = (props: ChatRoomProps) => {
   const [messageInput, setMessageInput] = useState("");
 
   useEffect(() => {
-    props.socket.on('receiveMessage', (message: Message) => {
+    const messageListener = (message: Message) => {
       addMessages((messages) => [message, ...messages]);
       console.error("NEW MESSAGE", message, messages)
-    });
+    }
+    props.socket.on('receiveMessage', messageListener);
 
-    return () => { props.socket.off('receiveMessage') };
+    return () => { props.socket.off('receiveMessage', messageListener) };
   }, [props.roomID])
 
   const sendMessage = () => {

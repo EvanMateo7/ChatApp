@@ -13,9 +13,10 @@ import React, { useContext, useState } from "react";
 import { UserContext } from "./App";
 import ListSubheader from "@material-ui/core/ListSubheader";
 import Divider from "@material-ui/core/Divider";
+import { Socket } from "socket.io";
 
 export interface RoomListProps {
-  socket: SocketIOClient.Socket,
+  socket: Socket,
   currentRoom: string,
   rooms: string[],
   setCurrentRoom: Function,

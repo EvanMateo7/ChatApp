@@ -1,6 +1,6 @@
 
 import express from "express";
-import socketio from "socket.io";
+import { Server as SocketIOServer } from "socket.io";
 import * as firebase from "./firebaseServer";
 import { Message, RoomJoin } from "../models";
 
@@ -12,7 +12,7 @@ app.use(express.static('dist'));
 console.log("Express server starting...");
 
 // SocketIO
-const io = socketio(server);
+const io = new SocketIOServer(server);
 
 io.on('connect', (socket) => {
     console.log('Socket has connected with ID: ' + socket.id);
@@ -22,7 +22,7 @@ io.on('connect', (socket) => {
         const roomID = roomJoin.roomID;
         
         // Check if socket is already in room
-        if (Object.keys(io.sockets.adapter.sids[socket.id]).includes(roomID)) {
+        if (socket.rooms.has(roomID)) {
             return;
         }
         
@@ -32,12 +32,12 @@ io.on('connect', (socket) => {
             socket.join(roomID);
 
             // Emit to self all my rooms
-            io.to(socket.id).emit('myRooms', io.sockets.adapter.sids[socket.id]);
+            io.to(socket.id).emit('myRooms', Array.from(socket.rooms));
           })
           .catch( e => console.error(`${e} - source server.ts - on joinRoom`) );
         
         // Get clients
-        io.in(roomID).clients((error: any, clients: any) => {
+        io.in(roomID).allSockets().then((clients: Set<string>) => {
 
             // Emit to everyone in room including emitter
             io.to(roomID).emit('clients', roomID, clients);
@@ -53,10 +53,9 @@ io.on('connect', (socket) => {
           .catch(e => console.error(`${e} - source: server.ts - on message`));    
     });
 
-    socket.on('leaveRoom', (roomID: string) => {
-      socket.leave(roomID, () => {
-        console.error("LEFT ROOM ", roomID);
-      });
+    socket.on('leaveRoom', async (roomID: string) => {
+      await socket.leave(roomID)
+      console.error("LEFT ROOM ", roomID);
     });
 
     socket.on('login', (user) => {
@@ -64,6 +63,7 @@ io.on('connect', (socket) => {
     });
 
     socket.on('disconnect', () => {
+        console.error("DISCONNED")
         socket.removeAllListeners();
     });
 });
