@@ -5,8 +5,9 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "webpack --config webpack.dev.js",
-    "server": "tsc --watch",
+    "watchServer": "tsc --watch",
+    "watchClient": "webpack --config webpack.dev.js",
+    "dev": "concurrently --kill-others \"npm run watchServer\" \"npm run watchClient\"",
     "build": "webpack --config webpack.prod.js",
     "start": "start http://localhost:3000 && nodemon --watch server/server server/server/server.js"
   },
@@ -36,6 +37,7 @@
   "devDependencies": {
     "@types/react": "^17.0.5",
     "@types/react-dom": "^17.0.3",
+    "concurrently": "^6.1.0",
     "fork-ts-checker-webpack-plugin": "^6.2.6",
     "source-map-loader": "^2.0.1",
     "ts-loader": "^9.1.2",
