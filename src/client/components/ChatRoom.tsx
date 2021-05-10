@@ -62,11 +62,12 @@ export const ChatRoom = (props: ChatRoomProps) => {
       alert("message is empty")
       return;
     }
-    if (props.roomID == null) {
+    if (!props.roomID) {
       return;
     }
     const newMessage: Message = {
-      sender: "test",
+      userID: "test",
+      userName: "test",
       message: messageInput.trim(),
       roomID: props.roomID
     }
@@ -95,7 +96,7 @@ export const ChatRoom = (props: ChatRoomProps) => {
   return (
     <Box className={classes.chatRoom}>
       <Box className={classes.chatWall}>
-        {messages.map(m => <ChatMessage roomID={m.roomID} sender={m.sender} message={m.message} />)}
+        {messages.map(m => <ChatMessage roomID={m.roomID} userID={m.userID} userName={m.userName} message={m.message} />)}
       </Box>
       <Paper className={classes.chatForm} color="primary" elevation={4} component="form" onSubmit={handleSubmit}>
         <InputBase id="message" className={classes.input} multiline rows={4} placeholder="Message" onKeyDown={handleKeyDown}
@@ -107,4 +108,4 @@ export const ChatRoom = (props: ChatRoomProps) => {
   );
 }
 
-const ChatMessage = (props: Message) => (<div key={props.roomID} className="message">{props.sender}: {props.message}</div>);
+const ChatMessage = (props: Message) => (<div key={props.roomID} className="message">{props.userName}: {props.message}</div>);
