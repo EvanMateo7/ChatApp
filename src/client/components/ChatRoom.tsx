@@ -69,7 +69,8 @@ export const ChatRoom = (props: ChatRoomProps) => {
       userID: "test",
       userName: "test",
       message: messageInput.trim(),
-      roomID: props.roomID
+      roomID: props.roomID,
+      timestamp: Date.now()
     }
 
     props.socket.emit('message', newMessage);
@@ -96,7 +97,7 @@ export const ChatRoom = (props: ChatRoomProps) => {
   return (
     <Box className={classes.chatRoom}>
       <Box className={classes.chatWall}>
-        {messages.map(m => <ChatMessage roomID={m.roomID} userID={m.userID} userName={m.userName} message={m.message} />)}
+        {messages.map(m => <ChatMessage message={m} />)}
       </Box>
       <Paper className={classes.chatForm} color="primary" elevation={4} component="form" onSubmit={handleSubmit}>
         <InputBase id="message" className={classes.input} multiline rows={4} placeholder="Message" onKeyDown={handleKeyDown}
@@ -108,4 +109,4 @@ export const ChatRoom = (props: ChatRoomProps) => {
   );
 }
 
-const ChatMessage = (props: Message) => (<div key={props.roomID} className="message">{props.userName}: {props.message}</div>);
+const ChatMessage = ({message}: {message: Message}) => (<div key={message.roomID} className="message">{message.userName}: {message.message}</div>);

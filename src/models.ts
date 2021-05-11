@@ -3,7 +3,8 @@ export interface Message {
     roomID: string
     userID: string,
     userName: string,
-    message: string
+    message: string,
+    timestamp: number
 }
 
 export interface RoomJoin {
