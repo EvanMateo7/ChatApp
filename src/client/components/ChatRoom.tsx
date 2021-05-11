@@ -8,6 +8,7 @@ import InputBase from "@material-ui/core/InputBase";
 import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
 import { Socket } from "socket.io";
+import { useChatRoom } from "../chatService";
 
 interface ChatRoomProps { roomID: string, socket: Socket }
 
@@ -44,18 +45,8 @@ const useStyles = makeStyles((theme) => ({
 export const ChatRoom = (props: ChatRoomProps) => {
 
   const classes = useStyles();
-  const [messages, addMessages] = useState<Message[]>([]);
+  const messages = useChatRoom(props.roomID);
   const [messageInput, setMessageInput] = useState("");
-
-  useEffect(() => {
-    const messageListener = (message: Message) => {
-      addMessages((messages) => [message, ...messages]);
-      console.error("NEW MESSAGE", message, messages)
-    }
-    props.socket.on('receiveMessage', messageListener);
-
-    return () => { props.socket.off('receiveMessage', messageListener) };
-  }, [props.roomID])
 
   const sendMessage = () => {
     if (messageInput.trim() == "") {
@@ -97,7 +88,7 @@ export const ChatRoom = (props: ChatRoomProps) => {
   return (
     <Box className={classes.chatRoom}>
       <Box className={classes.chatWall}>
-        {messages.map(m => <ChatMessage message={m} />)}
+        {messages.map((m: Message) => <ChatMessage message={m} />)}
       </Box>
       <Paper className={classes.chatForm} color="primary" elevation={4} component="form" onSubmit={handleSubmit}>
         <InputBase id="message" className={classes.input} multiline rows={4} placeholder="Message" onKeyDown={handleKeyDown}
