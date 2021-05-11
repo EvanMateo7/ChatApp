@@ -12,7 +12,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import firebase from "firebase";
 import React, { useRef, useState } from "react";
 import { useChatRoom } from "../chatService";
-import { useCurrentUser } from "../firebaseClient";
+import { useCurrentUser } from "../authService";
 import { ChatRoom } from "./ChatRoom";
 import { Login } from "./Login";
 import { RoomList } from "./RoomList";
