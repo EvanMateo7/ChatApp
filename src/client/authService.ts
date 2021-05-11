@@ -17,7 +17,7 @@ export function useCurrentUser() {
   return [user, logout] as const;
 }
 
-export function googleLogin() {
+export function googleLogin(): Promise<firebase.User | null | void> {
   return firebaseAuth.signInWithPopup(googleAuthProvider)
     .then( user => {
       return user.user;
