@@ -7,7 +7,6 @@ export const useChatRoom = (socket: Socket, user: firebase.User | null) => {
   const [rooms, setRooms] = useState([] as Array<string>);
 
   const setRoom = (roomID: string) => {
-    console.error(rooms, roomID, user == null, !roomID, currentRoom == roomID)
     if (user == null || !roomID || currentRoom == roomID) return;
     setCurrentRoom(roomID);
     socket.emit("leaveRoom", currentRoom);
@@ -23,6 +22,9 @@ export const useChatRoom = (socket: Socket, user: firebase.User | null) => {
         setRoom(roomID);
         return [...rooms, roomID];
       });
+    } 
+    else {
+      setRoom(roomID);
     }
   }
 
