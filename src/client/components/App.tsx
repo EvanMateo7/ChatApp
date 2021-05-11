@@ -11,7 +11,7 @@ import Typography from "@material-ui/core/Typography";
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import firebase from "firebase";
 import React, { useRef, useState } from "react";
-import { useChatRoom } from "../chatService";
+import { useChatRooms } from "../chatService";
 import { useCurrentUser } from "../authService";
 import { ChatRoom } from "./ChatRoom";
 import { Login } from "./Login";
@@ -47,7 +47,7 @@ export const App = (props: any) => {
   }))();
 
   const [user, logout] = useCurrentUser();
-  const [currentRoom, rooms, setCurrentRoom, joinRoom] = useChatRoom(props.socket, user);
+  const [currentRoom, rooms, setCurrentRoom, joinRoom] = useChatRooms(props.socket, user);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const toggleRoomList = () => {
