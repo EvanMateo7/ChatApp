@@ -17,12 +17,13 @@ export function useCurrentUser() {
   return [user, logout] as const;
 }
 
+
 export function googleLogin(): Promise<firebase.User | null | void> {
   return firebaseAuth.signInWithPopup(googleAuthProvider)
-    .then( user => {
+    .then(user => {
       return user.user;
     })
-    .catch( e => {
-        console.error(`${e} - source: firebaseClient.ts - googleLogin`);
+    .catch(e => {
+      console.error(`${e} - source: firebaseClient.ts - googleLogin`);
     });
 }
