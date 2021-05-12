@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Box from '@material-ui/core/Box';
 import SendIcon from '@material-ui/icons/Send';
 import { Message } from '../../models'
@@ -9,6 +9,7 @@ import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
 import { Socket } from "socket.io";
 import { useChatRoom } from "../chatService";
+import LinearProgress from "@material-ui/core/LinearProgress";
 
 interface ChatRoomProps { roomID: string, socket: Socket }
 
@@ -88,7 +89,11 @@ export const ChatRoom = (props: ChatRoomProps) => {
   return (
     <Box className={classes.chatRoom}>
       <Box className={classes.chatWall}>
-        {messages.map((m: Message) => <ChatMessage message={m} />)}
+        {
+          messages !== null
+          ? messages.map((m: Message) => <ChatMessage message={m} />)
+          : <LinearProgress />
+        }
       </Box>
       <Paper className={classes.chatForm} color="primary" elevation={4} component="form" onSubmit={handleSubmit}>
         <InputBase id="message" className={classes.input} multiline rows={4} placeholder="Message" onKeyDown={handleKeyDown}

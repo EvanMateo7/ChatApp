@@ -2,7 +2,7 @@ import firebase from "firebase";
 import { useEffect, useState } from "react";
 import { firestore } from "./firebaseClient";
 import { Socket } from "socket.io";
-import { Message } from "../models";
+import { Message, RoomJoin } from "../models";
 
 
 export const useChatRooms = (socket: Socket, user: firebase.User | null) => {
@@ -10,24 +10,27 @@ export const useChatRooms = (socket: Socket, user: firebase.User | null) => {
   const [rooms, setRooms] = useState([] as Array<string>);
 
   const setRoom = (roomID: string) => {
-    if (user == null || !roomID || currentRoom == roomID) return;
+    if (!user || !roomID || currentRoom == roomID) return;
     setCurrentRoom(roomID);
-    socket.emit("leaveRoom", currentRoom);
-    socket.emit("joinRoom", {
-      roomID: roomID,
-      name: user.displayName
-    });
   }
 
   const joinRoom = (roomID: string) => {
+    if (!user || !roomID || currentRoom == roomID) return;
     if (!roomExists(roomID)) {
-      setRooms((rooms: string[]) => {
-        setRoom(roomID);
-        return [...rooms, roomID];
+      socket.emit("joinRoom", {
+        roomID: roomID,
+        userID: user.uid
+      } as RoomJoin,
+      (success: boolean) => {
+        success &&
+        setRooms((rooms: string[]) => {
+          setRoom(roomID)
+          return [...rooms, roomID];
+        });
       });
     } 
     else {
-      setRoom(roomID);
+      setRoom(roomID)
     }
   }
 
@@ -38,21 +41,26 @@ export const useChatRooms = (socket: Socket, user: firebase.User | null) => {
 
 
 export const useChatRoom = (roomID: string) => {
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<Message[] | null>(null);
 
   useEffect(() => {
     if (roomID) {
-      const unsubscribe = firestore.collection("rooms")
+      let unsubscribeMessages = firestore.collection("rooms")
         .doc(roomID)
         .collection("messages")
         .orderBy("timestamp", "desc")
-        .limit(3)
-        .onSnapshot((snapshot) => {
-          const roomMessages = snapshot.docs.map(doc => doc.data() as Message);
-          setMessages(roomMessages);
-        });
+        .limit(3) // TODO: Load more messages on scroll and use Array.slice to update messages
+        .onSnapshot(
+          (snapshot) => {
+            const roomMessages = snapshot.docs.map(doc => doc.data() as Message);
+            setMessages(roomMessages);
+          },
+          (error: firebase.firestore.FirestoreError) => {
+            console.error(error);
+          }
+        );
       
-      return unsubscribe;
+      return unsubscribeMessages;
     }
   }, [roomID]);
 
