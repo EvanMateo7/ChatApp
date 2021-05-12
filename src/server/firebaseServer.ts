@@ -36,7 +36,7 @@ export async function addUser(user: admin.auth.UserInfo) {
 export async function joinRoom(roomjoin: RoomJoin) {
   const roomRef = db.collection("rooms");
   
-  return roomRef.doc(roomjoin.roomID).set({users: admin.firestore.FieldValue.arrayUnion(roomjoin.name)}, {merge: true})
+  return roomRef.doc(roomjoin.roomID).set({users: admin.firestore.FieldValue.arrayUnion(roomjoin.userID)}, {merge: true})
     .catch( e => console.error(`${e} - source firebaseServer.ts - joinRoom`) );
 }
 

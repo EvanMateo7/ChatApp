@@ -9,7 +9,7 @@ export interface Message {
 
 export interface RoomJoin {
     roomID: string,
-    name: string
+    userID: string
 }
 
 export interface User {
