@@ -45,15 +45,40 @@ export const useChatRoom = (roomID: string) => {
 
   useEffect(() => {
     if (roomID) {
+
+      // Get some latest messages first
+      firestore.collection("rooms")
+        .doc(roomID)
+        .collection("messages")
+        .orderBy("timestamp", "desc")
+        .limit(5)
+        .get()
+        .then((snapshot) => {
+          const roomMessages = snapshot.docs.map(doc => doc.data() as Message);
+          setMessages(roomMessages);
+        })
+        .catch((error) => console.error(error));
+
+      // Listen to new messages
+      let ignoredFirstRead = false;
       let unsubscribeMessages = firestore.collection("rooms")
         .doc(roomID)
         .collection("messages")
         .orderBy("timestamp", "desc")
-        .limit(3) // TODO: Load more messages on scroll and use Array.slice to update messages
+        .limit(1)
         .onSnapshot(
           (snapshot) => {
-            const roomMessages = snapshot.docs.map(doc => doc.data() as Message);
-            setMessages(roomMessages);
+            if (ignoredFirstRead) {
+              const roomMessages = snapshot.docs.map(doc => doc.data() as Message);
+              setMessages((messages) => {
+                return (messages
+                ? [...roomMessages, ...messages]
+                : roomMessages)
+              });
+            }
+            else {
+              ignoredFirstRead = true;
+            }
           },
           (error: firebase.firestore.FirestoreError) => {
             console.error(error);
