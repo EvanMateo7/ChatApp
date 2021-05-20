@@ -2,10 +2,10 @@ import firebase from "firebase";
 import { useEffect, useState } from "react";
 import { firestore } from "./firebaseClient";
 import { Socket } from "socket.io";
-import { Message, RoomJoin } from "../models";
+import { Message, RoomJoin, User } from "../models";
 
 
-export const useChatRooms = (socket: Socket, user: firebase.User | null) => {
+export const useChatRooms = (socket: Socket, user: User | null) => {
   const [currentRoom, setCurrentRoom] = useState("");
   const [rooms, setRooms] = useState([] as Array<string>);
 
@@ -19,7 +19,7 @@ export const useChatRooms = (socket: Socket, user: firebase.User | null) => {
     if (!roomExists(roomID)) {
       socket.emit("joinRoom", {
         roomID: roomID,
-        userID: user.uid
+        userID: user.id
       } as RoomJoin,
       (success: boolean) => {
         success &&

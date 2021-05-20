@@ -1,5 +1,4 @@
 import * as admin from "firebase-admin";
-import { UserRefreshClient } from "google-auth-library";
 import { Message, RoomJoin, User } from "../models";
 
 
@@ -21,7 +20,8 @@ export async function addUser(user: admin.auth.UserInfo) {
   if(!userExists) {
     const newUser: User = {
       id: user.uid,
-      name: user.displayName
+      name: user.displayName,
+      photoURL: user.photoURL
     }
     usersRef.doc(user.uid).set(newUser)
       .then( () => console.log(`new user created with userID ${user.uid}`))

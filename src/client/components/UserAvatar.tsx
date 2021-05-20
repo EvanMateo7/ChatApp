@@ -2,12 +2,12 @@ import MoodIcon from '@material-ui/icons/Mood';
 import Button from "@material-ui/core/Button";
 import Popover from "@material-ui/core/Popover";
 import Typography from "@material-ui/core/Typography";
-import firebase from "firebase";
 import React, { useState } from "react";
 import Avatar from '@material-ui/core/Avatar';
 import { makeStyles } from '@material-ui/core/styles';
+import { User } from '../../models';
 
-export interface UserProps { user: firebase.User, logout: Function }
+export interface UserProps { user: User, logout: Function }
 
 const useStyles = makeStyles((theme) => ({
   userTag: {
@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const User = (props: UserProps) => {
+export const UserAvatar = (props: UserProps) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -44,11 +44,11 @@ export const User = (props: UserProps) => {
           <div className={classes.userAvatar}>
           {
             (props.user && props.user.photoURL)
-            ? <Avatar alt={props.user.displayName!} src={props.user.photoURL!} />
+            ? <Avatar alt={props.user.name!} src={props.user.photoURL!} />
             : <MoodIcon></MoodIcon>
           }
           </div>
-          <Typography>{props.user?.displayName}</Typography>
+          <Typography>{props.user?.name}</Typography>
         </div>
       </div>
       <Popover 

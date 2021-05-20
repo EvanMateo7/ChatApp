@@ -16,10 +16,12 @@ import { useCurrentUser } from "../authService";
 import { ChatRoom } from "./ChatRoom";
 import { Login } from "./Login";
 import { RoomList } from "./RoomList";
-import { User } from "./User";
+import { UserAvatar } from "./UserAvatar";
+import { ProfileEdit } from "./ProfileEdit";
+import { User } from "../../models";
 
 
-export const UserContext = React.createContext<firebase.User | null>(null);
+export const UserContext = React.createContext<User | null>(null);
 
 const theme = createMuiTheme({
   palette: {
@@ -71,7 +73,7 @@ export const App = (props: any) => {
               {
                 !user
                 ? <Login socket={props.socket} />
-                : <User user={user} logout={logout} />
+                : <UserAvatar user={user} logout={logout} />
               }
             </Toolbar>
           </AppBar>
