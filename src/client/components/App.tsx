@@ -31,6 +31,11 @@ const theme = createMuiTheme({
       main: "#dc6600",
     },
   },
+  props: {
+    MuiTextField: {
+      variant: "outlined"
+    }
+  }
 });
 
 export const App = (props: any) => {
@@ -72,8 +77,8 @@ export const App = (props: any) => {
               </Typography>
               {
                 !user
-                ? <Login socket={props.socket} />
-                : <UserAvatar user={user} logout={logout} />
+                  ? <Login socket={props.socket} />
+                  : <UserAvatar user={user} logout={logout} />
               }
             </Toolbar>
           </AppBar>

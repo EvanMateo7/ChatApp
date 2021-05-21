@@ -27,7 +27,6 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
     flexDirection: "column",
-    alignItems: "center",
     height: "100%",
     padding: 15,
   },
@@ -49,7 +48,7 @@ export const RoomList = (props: RoomListProps) => {
       alert("Room ID is empty")
       return;
     }
-    
+
     props.joinRoom(roomIDInput.trim());
     setRoomIDInput("");
     return false;
@@ -63,8 +62,8 @@ export const RoomList = (props: RoomListProps) => {
     <Box className={classes.root}>
       <form className={classes.roomForm} onSubmit={handleSubmit} noValidate>
         <FormControl>
-          <TextField id="roomID" margin="normal" label="Room ID" InputLabelProps={{ shrink: true, }} variant="outlined" 
-          value={roomIDInput} onChange={handleRoomIDChange}/>
+          <TextField id="roomID" margin="normal" label="Room ID" InputLabelProps={{ shrink: true, }}
+            value={roomIDInput} onChange={handleRoomIDChange} />
           <Button type="submit" variant="contained" color="primary">Join</Button>
         </FormControl>
       </form>
@@ -79,7 +78,7 @@ export const RoomList = (props: RoomListProps) => {
           }>
           {props.rooms.map(roomID =>
             <>
-              <ListItem button onClick={() => props.setCurrentRoom(roomID)} selected={ roomID === props.currentRoom }>
+              <ListItem button onClick={() => props.setCurrentRoom(roomID)} selected={roomID === props.currentRoom}>
                 <ListItemAvatar>
                   <Avatar>
                     <ImageIcon />
