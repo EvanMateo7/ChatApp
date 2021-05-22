@@ -47,6 +47,9 @@ export function useCurrentUser() {
 
   const logout = () => {
     firebaseAuth.signOut();
+    if (window) {
+      window.location.href = '/';
+    }
   }
 
   return [user, logout] as const;

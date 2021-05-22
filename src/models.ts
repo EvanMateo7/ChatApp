@@ -17,3 +17,8 @@ export interface User {
   name: string,
   photoURL: string
 }
+
+export interface UserLogout {
+  user: User | null,
+  logout: Function | null
+}

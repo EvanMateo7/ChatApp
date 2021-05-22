@@ -9,19 +9,14 @@ import { createMuiTheme, makeStyles, MuiThemeProvider } from "@material-ui/core/
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import firebase from "firebase";
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useContext } from "react";
 import { useChatRooms } from "../chatService";
-import { useCurrentUser } from "../authService";
 import { ChatRoom } from "./ChatRoom";
 import { Login } from "./Login";
 import { RoomList } from "./RoomList";
 import { UserAvatar } from "./UserAvatar";
-import { ProfileEdit } from "./ProfileEdit";
-import { User } from "../../models";
+import { UserContext } from "./UserContext";
 
-
-export const UserContext = React.createContext<User | null>(null);
 
 const theme = createMuiTheme({
   palette: {
@@ -53,7 +48,7 @@ export const App = (props: any) => {
     },
   }))();
 
-  const [user, logout] = useCurrentUser();
+  const { user, logout } = useContext(UserContext);
   const [currentRoom, rooms, setCurrentRoom, joinRoom] = useChatRooms(props.socket, user);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
@@ -62,44 +57,42 @@ export const App = (props: any) => {
   }
 
   return (
-    <UserContext.Provider value={user}>
-      <MuiThemeProvider theme={theme}>
-        <CssBaseline />
+    <MuiThemeProvider theme={theme}>
+      <CssBaseline />
 
-        <Box display="flex" flexDirection="column" height="100%" className={isDrawerOpen ? classes.shifted : undefined}>
-          <AppBar
-            position="static"
-            className={classes.appBar}>
-            <Toolbar>
-              <Button color="inherit" onClick={toggleRoomList}>Rooms</Button>
-              <Typography variant="h6" align="center" className={classes.title}>
-                ChatApp
-              </Typography>
-              {
-                !user
-                  ? <Login socket={props.socket} />
-                  : <UserAvatar user={user} logout={logout} />
-              }
-            </Toolbar>
-          </AppBar>
-          {
-            currentRoom &&
-            <ChatRoom key={currentRoom} socket={props.socket} roomID={currentRoom} />
-          }
-        </Box>
+      <Box display="flex" flexDirection="column" height="100%" className={isDrawerOpen ? classes.shifted : undefined}>
+        <AppBar
+          position="static"
+          className={classes.appBar}>
+          <Toolbar>
+            <Button color="inherit" onClick={toggleRoomList}>Rooms</Button>
+            <Typography variant="h6" align="center" className={classes.title}>
+              ChatApp
+            </Typography>
+            {
+              !user
+                ? <Login socket={props.socket} />
+                : <UserAvatar user={user} logout={logout} />
+            }
+          </Toolbar>
+        </AppBar>
+        {
+          currentRoom &&
+          <ChatRoom key={currentRoom} socket={props.socket} roomID={currentRoom} />
+        }
+      </Box>
 
-        <Drawer anchor="left" variant="persistent" open={isDrawerOpen}>
-          <div ref={drawerRef}>
-            <Box display="flex" justifyContent="flex-end">
-              <IconButton onClick={toggleRoomList}>
-                <ChevronLeftIcon />
-              </IconButton>
-            </Box>
-          </div>
-          <RoomList socket={props.socket} currentRoom={currentRoom} rooms={rooms} setCurrentRoom={setCurrentRoom} joinRoom={joinRoom} />
-        </Drawer>
+      <Drawer anchor="left" variant="persistent" open={isDrawerOpen}>
+        <div ref={drawerRef}>
+          <Box display="flex" justifyContent="flex-end">
+            <IconButton onClick={toggleRoomList}>
+              <ChevronLeftIcon />
+            </IconButton>
+          </Box>
+        </div>
+        <RoomList socket={props.socket} currentRoom={currentRoom} rooms={rooms} setCurrentRoom={setCurrentRoom} joinRoom={joinRoom} />
+      </Drawer>
 
-      </MuiThemeProvider>
-    </UserContext.Provider>
+    </MuiThemeProvider>
   );
 }
