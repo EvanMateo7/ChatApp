@@ -72,7 +72,7 @@ export const App = (props: any) => {
             {
               !user
                 ? <Login socket={props.socket} />
-                : <UserAvatar user={user} logout={logout} />
+                : <UserAvatar user={user!} logout={logout!} />
             }
           </Toolbar>
         </AppBar>
