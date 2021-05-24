@@ -1,5 +1,4 @@
 import MoodIcon from '@material-ui/icons/Mood';
-import Typography from "@material-ui/core/Typography";
 import React, { useState } from "react";
 import Avatar from '@material-ui/core/Avatar';
 import { makeStyles } from '@material-ui/core/styles';
@@ -12,7 +11,21 @@ import Box from '@material-ui/core/Box';
 
 export interface UserProps { user: User, logout: Function }
 
+const useStyles = makeStyles((theme) => ({
+  menu: {
+    "& *": {
+      fontSize: "0.8rem"
+    }
+  },
+  logout: {
+    "&:hover": {
+      backgroundColor: theme.palette.secondary.main
+    }
+  },
+}));
+
 export const UserAvatar = (props: UserProps) => {
+  const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleOpenMenu = (e: any) => {
@@ -40,7 +53,7 @@ export const UserAvatar = (props: UserProps) => {
             ? <Avatar alt={props.user.name!} src={props.user.photoURL!} />
             : <MoodIcon></MoodIcon>
         }
-        <Typography>{props.user?.name}</Typography>
+        <div>{props.user?.name}</div>
       </Box>
       <Menu
         keepMounted
@@ -56,14 +69,15 @@ export const UserAvatar = (props: UserProps) => {
           horizontal: 'right',
         }}
         getContentAnchorEl={null}
-      >
-        <MenuItem onClick={handleMenuClick(props.logout)}>Logout</MenuItem>
-        <Divider />
+        className={classes.menu}
+        >
         <ProfileEditOpener user={props.user}>
           <MenuItem onClick={handleMenuClick()}>
             Edit Profile
           </MenuItem>
         </ProfileEditOpener>
+        <Divider />
+        <MenuItem className={classes.logout} onClick={handleMenuClick(props.logout)}>Logout</MenuItem>
       </Menu>
     </>
   );
