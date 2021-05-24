@@ -8,24 +8,11 @@ import { ProfileEditOpener } from './ProfileEditOpener';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Divider from '@material-ui/core/Divider';
+import Box from '@material-ui/core/Box';
 
 export interface UserProps { user: User, logout: Function }
 
-const useStyles = makeStyles((theme) => ({
-  userTag: {
-    display: "inline-flex",
-    justifyContent: "center",
-    alignItems: "center",
-    margin: 5,
-  },
-  userAvatar: {
-    display: "flex",
-    padding: 8,
-  },
-}));
-
 export const UserAvatar = (props: UserProps) => {
-  const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleOpenMenu = (e: any) => {
@@ -47,18 +34,14 @@ export const UserAvatar = (props: UserProps) => {
 
   return (
     <>
-      <div onClick={handleOpenMenu}>
-        <div className={classes.userTag}>
-          <div className={classes.userAvatar}>
-            {
-              (props.user && props.user.photoURL)
-                ? <Avatar alt={props.user.name!} src={props.user.photoURL!} />
-                : <MoodIcon></MoodIcon>
-            }
-          </div>
-          <Typography>{props.user?.name}</Typography>
-        </div>
-      </div>
+      <Box display="flex" justifyContent="center" alignItems="center" gridGap="5px" onClick={handleOpenMenu}>
+        {
+          (props.user && props.user.photoURL)
+            ? <Avatar alt={props.user.name!} src={props.user.photoURL!} />
+            : <MoodIcon></MoodIcon>
+        }
+        <Typography>{props.user?.name}</Typography>
+      </Box>
       <Menu
         keepMounted
         open={open}
