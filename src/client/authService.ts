@@ -65,3 +65,8 @@ export function googleLogin(): Promise<firebase.User | null | void> {
       console.error(`${e} - source: firebaseClient.ts - googleLogin`);
     });
 }
+
+
+export function editProfile(user: User): Promise<void> {
+  return firestore.collection("users").doc(user.id).set(user, {merge: true});
+}

@@ -9,25 +9,25 @@ import TextField from '@material-ui/core/TextField';
 import { useFormik } from 'formik';
 import React from 'react';
 import { User } from '../../models';
+import { editProfile } from '../authService';
+import { object, SchemaOf, string } from 'yup';
 
 interface ProfileEditProps { user: User, open: boolean, handleClose: () => void }
+
+const UserSchema: SchemaOf<Partial<User>> = object({
+  id: string().notRequired(),
+  name: string().required("Display name is required."),
+  photoURL: string().notRequired(),
+});
 
 export const ProfileEdit = (props: ProfileEditProps) => {
 
   const formik = useFormik({
-    initialValues: { id: '', name: '' } as User,
-    validate: (values) => {
-      const errors = {} as User;
-      if (!values.name) {
-        errors.name = 'Required';
-      }
-      return errors;
-    },
-    onSubmit: (values, { setSubmitting }) => {
-      setTimeout(() => {
-        alert(JSON.stringify(values, null, 2));
-        setSubmitting(false);
-      }, 400);
+    initialValues: props.user,
+    validationSchema: UserSchema,
+    onSubmit: async (user, { setSubmitting }) => {
+      await editProfile(user);
+      setSubmitting(false)
     }
   });
 
@@ -44,8 +44,8 @@ export const ProfileEdit = (props: ProfileEditProps) => {
         <Box display="flex" flexDirection="column" alignItems="stretch" height="100%" padding="15">
           <form onSubmit={formik.handleSubmit}>
             <FormControl fullWidth={true}>
-              <TextField id="name" name="name" value={formik.values.name}
-                size="small"
+              <TextField id="name" name="name" size="small"
+                value={formik.values.name}
                 onChange={formik.handleChange}
                 error={formik.touched.name && Boolean(formik.errors.name)}
                 helperText={formik.touched.name && formik.errors.name}
