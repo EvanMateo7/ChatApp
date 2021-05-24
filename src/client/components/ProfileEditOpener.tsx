@@ -24,7 +24,7 @@ export const ProfileEditOpener: FunctionComponent<ProfileEditOpenerProps> = (pro
           handleClickOpen();
         }
       })}
-      <ProfileEdit user={props.user} open={open} handleClose={handleClose} />
+      {open && <ProfileEdit user={props.user} open={open} handleClose={handleClose} />}
     </>
   );
 }

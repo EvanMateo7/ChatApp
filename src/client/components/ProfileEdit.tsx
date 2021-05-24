@@ -7,7 +7,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import FormControl from '@material-ui/core/FormControl';
 import TextField from '@material-ui/core/TextField';
 import { useFormik } from 'formik';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { User } from '../../models';
 import { editProfile } from '../authService';
 import { object, SchemaOf, string } from 'yup';
@@ -50,6 +50,15 @@ export const ProfileEdit = (props: ProfileEditProps) => {
                 error={formik.touched.name && Boolean(formik.errors.name)}
                 helperText={formik.touched.name && formik.errors.name}
                 margin="normal" label="Name" InputLabelProps={{ shrink: true, }} />
+            </FormControl>
+
+            <FormControl fullWidth={true}>
+              <TextField id="photoURL" name="photoURL" size="small"
+                value={formik.values.photoURL}
+                onChange={formik.handleChange}
+                error={formik.touched.photoURL && Boolean(formik.errors.photoURL)}
+                helperText={formik.touched.photoURL && formik.errors.photoURL}
+                margin="normal" label="Photo URL" InputLabelProps={{ shrink: true, }} />
             </FormControl>
 
             <DialogActions>
