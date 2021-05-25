@@ -10,7 +10,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import React, { useContext, useState } from "react";
-import { UserContext } from "./App";
+import { UserContext } from "./UserContext";
 import ListSubheader from "@material-ui/core/ListSubheader";
 import Divider from "@material-ui/core/Divider";
 import { Socket } from "socket.io";
@@ -48,7 +48,7 @@ export const RoomList = (props: RoomListProps) => {
       alert("Room ID is empty")
       return;
     }
-    
+
     props.joinRoom(roomIDInput.trim());
     setRoomIDInput("");
     return false;
@@ -62,8 +62,8 @@ export const RoomList = (props: RoomListProps) => {
     <Box className={classes.root}>
       <form className={classes.roomForm} onSubmit={handleSubmit} noValidate>
         <FormControl>
-          <TextField id="roomID" margin="normal" label="Room ID" InputLabelProps={{ shrink: true, }} variant="outlined" 
-          value={roomIDInput} onChange={handleRoomIDChange}/>
+          <TextField id="roomID" margin="normal" label="Room ID" InputLabelProps={{ shrink: true, }}
+            value={roomIDInput} onChange={handleRoomIDChange} />
           <Button type="submit" variant="contained" color="primary">Join</Button>
         </FormControl>
       </form>
@@ -78,7 +78,7 @@ export const RoomList = (props: RoomListProps) => {
           }>
           {props.rooms.map(roomID =>
             <>
-              <ListItem button onClick={() => props.setCurrentRoom(roomID)} selected={ roomID === props.currentRoom }>
+              <ListItem button onClick={() => props.setCurrentRoom(roomID)} selected={roomID === props.currentRoom}>
                 <ListItemAvatar>
                   <Avatar>
                     <ImageIcon />

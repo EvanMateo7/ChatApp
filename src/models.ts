@@ -14,5 +14,11 @@ export interface RoomJoin {
 
 export interface User {
   id: string,
-  name: string
+  name: string,
+  photoURL: string
+}
+
+export interface UserLogout {
+  user: User | null,
+  logout: Function | null
 }

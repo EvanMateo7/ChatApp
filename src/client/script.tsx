@@ -2,13 +2,16 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { App } from "./components/App";
 import { io } from "socket.io-client";
+import { UserContextProvider } from "./components/UserContext";
 
 // Setup
 const socket = io();
 
 // React
 ReactDOM.render(
-  <App socket={socket} />,
+  <UserContextProvider>
+    <App socket={socket} />
+  </UserContextProvider>,
   document.getElementById("root")
 );
 
