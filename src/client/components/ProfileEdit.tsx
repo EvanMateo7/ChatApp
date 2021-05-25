@@ -27,7 +27,8 @@ export const ProfileEdit = (props: ProfileEditProps) => {
     validationSchema: UserSchema,
     onSubmit: async (user, { setSubmitting }) => {
       await editProfile(user);
-      setSubmitting(false)
+      setSubmitting(false);
+      props.handleClose();
     }
   });
 
