@@ -70,14 +70,18 @@ export const UserAvatar = (props: UserProps) => {
         }}
         getContentAnchorEl={null}
         className={classes.menu}
-        >
+      >
         <ProfileEditOpener user={props.user}>
           <MenuItem onClick={handleMenuClick()}>
             Edit Profile
           </MenuItem>
         </ProfileEditOpener>
+
         <Divider />
-        <MenuItem className={classes.logout} onClick={handleMenuClick(props.logout)}>Logout</MenuItem>
+
+        <MenuItem className={classes.logout} onClick={handleMenuClick(props.logout)}>
+          Logout
+        </MenuItem>
       </Menu>
     </>
   );
