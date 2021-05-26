@@ -1,4 +1,3 @@
-import MoodIcon from '@material-ui/icons/Mood';
 import React, { useState } from "react";
 import Avatar from '@material-ui/core/Avatar';
 import { makeStyles } from '@material-ui/core/styles';
@@ -48,11 +47,7 @@ export const UserAvatar = (props: UserProps) => {
   return (
     <>
       <Box display="flex" justifyContent="center" alignItems="center" gridGap="5px" onClick={handleOpenMenu}>
-        {
-          (props.user && props.user.photoURL)
-            ? <Avatar alt={props.user.name!} src={props.user.photoURL!} />
-            : <MoodIcon></MoodIcon>
-        }
+      <Avatar alt={props.user?.name} src={props.user?.photoURL} />
         <div>{props.user?.name}</div>
       </Box>
       <Menu

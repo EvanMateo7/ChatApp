@@ -77,8 +77,8 @@ export const App = (props: any) => {
           </Toolbar>
         </AppBar>
         {
-          currentRoom &&
-          <ChatRoom key={currentRoom} socket={props.socket} roomID={currentRoom} />
+          user && currentRoom &&
+          <ChatRoom key={currentRoom} user={user} socket={props.socket} roomID={currentRoom} />
         }
       </Box>
 

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Box from '@material-ui/core/Box';
 import SendIcon from '@material-ui/icons/Send';
-import { Message } from '../../models'
+import { Message, User } from '../../models'
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import InputBase from "@material-ui/core/InputBase";
@@ -10,8 +10,10 @@ import Divider from "@material-ui/core/Divider";
 import { Socket } from "socket.io";
 import { useChatRoom } from "../chatService";
 import LinearProgress from "@material-ui/core/LinearProgress";
+import Avatar from "@material-ui/core/Avatar";
 
-interface ChatRoomProps { roomID: string, socket: Socket }
+interface ChatRoomProps { roomID: string, user: User, socket: Socket }
+interface ChatMessageProps { user: User, message: Message }
 
 const useStyles = makeStyles((theme) => ({
   chatRoom: {
@@ -26,6 +28,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column-reverse",
     flexGrow: 1,
     flexBasis: 0,
+    margin: "10px",
     overflow: "auto",
   },
   chatForm: {
@@ -46,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
 export const ChatRoom = (props: ChatRoomProps) => {
 
   const classes = useStyles();
-  const messages = useChatRoom(props.roomID);
+  const [users, messages] = useChatRoom(props.roomID);
   const [messageInput, setMessageInput] = useState("");
 
   const sendMessage = () => {
@@ -58,8 +61,7 @@ export const ChatRoom = (props: ChatRoomProps) => {
       return;
     }
     const newMessage: Message = {
-      userID: "test",
-      userName: "test",
+      userID: props.user.id,
       message: messageInput.trim(),
       roomID: props.roomID,
       timestamp: Date.now()
@@ -90,9 +92,9 @@ export const ChatRoom = (props: ChatRoomProps) => {
     <Box className={classes.chatRoom}>
       <Box className={classes.chatWall}>
         {
-          messages !== null
-          ? messages.map((m: Message) => <ChatMessage message={m} />)
-          : <LinearProgress />
+          messages !== null && users
+            ? messages.map((m: Message) => <ChatMessage user={users[m.userID]} message={m} />)
+            : <LinearProgress />
         }
       </Box>
       <Paper className={classes.chatForm} color="primary" elevation={4} component="form" onSubmit={handleSubmit}>
@@ -105,4 +107,17 @@ export const ChatRoom = (props: ChatRoomProps) => {
   );
 }
 
-const ChatMessage = ({message}: {message: Message}) => (<div key={message.roomID} className="message">{message.userName}: {message.message}</div>);
+const ChatMessage = (props: ChatMessageProps) => {
+
+  return (
+    <Box key={props.message.roomID}
+      display="flex"
+      alignItems="center"
+      gridGap="10px"
+      margin="10px">
+
+      <Avatar alt={props.user?.name} src={props.user?.photoURL} />
+      {props.user?.name}: {props.message.message}
+    </Box>
+  );
+}
