@@ -11,6 +11,8 @@ import { Socket } from "socket.io";
 import { useChatRoom } from "../chatService";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import Avatar from "@material-ui/core/Avatar";
+import formatRelative from 'date-fns/formatRelative'
+import Typography from "@material-ui/core/Typography";
 
 interface ChatRoomProps { roomID: string, user: User, socket: Socket }
 interface ChatMessageProps { user: User, message: Message }
@@ -110,14 +112,25 @@ export const ChatRoom = (props: ChatRoomProps) => {
 const ChatMessage = (props: ChatMessageProps) => {
 
   return (
-    <Box key={props.message.roomID}
+    <Box key={props.message?.roomID}
       display="flex"
       alignItems="center"
       gridGap="10px"
       margin="10px">
 
       <Avatar alt={props.user?.name} src={props.user?.photoURL} />
-      {props.user?.name}: {props.message.message}
+      <Box display="flex"
+        flexDirection="column"
+        justifyContent="space-between"
+        gridGap="5px">
+        <div>
+          <b>{props.user?.name + " "}</b>
+          <Typography variant="caption" color="textSecondary">
+            {formatRelative(props.message?.timestamp, new Date())}
+          </Typography>
+        </div>
+        <div>{props.message?.message}</div>
+      </Box>
     </Box>
   );
 }
