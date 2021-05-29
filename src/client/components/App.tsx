@@ -18,9 +18,9 @@ import { UserAvatar } from "./UserAvatar";
 import { UserContext } from "./UserContext";
 
 
-const theme = createMuiTheme({
+const baseTheme = createMuiTheme({
   palette: {
-    type: 'dark',
+    type: "dark",
     primary: blue,
     secondary: {
       main: "#dc6600",
@@ -31,6 +31,26 @@ const theme = createMuiTheme({
       variant: "outlined"
     }
   }
+});
+
+const theme = createMuiTheme({
+  ...baseTheme,
+  overrides: {
+    MuiCssBaseline: {
+      "@global": {
+        "*::-webkit-scrollbar": {
+          width: "10px"
+        },
+        "*::-webkit-scrollbar-track": {
+          backgroundColor: "transparent",
+        },
+        "*::-webkit-scrollbar-thumb": {
+          backgroundColor: baseTheme.palette.background.paper,
+          borderRadius: "8px"
+        }
+      },
+    },
+  },
 });
 
 export const App = (props: any) => {
