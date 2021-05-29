@@ -2,7 +2,7 @@
 import express from "express";
 import { Server as SocketIOServer } from "socket.io";
 import * as firebaseServer from "./firebaseServer";
-import { Message, RoomJoin } from "../models";
+import { Message, RoomJoin, User } from "../models";
 import * as admin from "firebase-admin";
 
 // Setup
@@ -67,6 +67,18 @@ io.on('connect', (socket) => {
     firebaseServer.addUser(user)
       .then(() => console.log(`addUser - user: ${user.displayName}`))
       .catch(e => console.error(`${e} - source: server.ts - on addUser`));
+  });
+
+  socket.on('editUser', (user: User, ack: Function) => {
+    firebaseServer.editUser(user)
+      .then(() => {
+        ack({});
+        console.log(`editUser - user: ${user.id}`);
+      })
+      .catch(e => {
+        ack(e);
+        console.error(`${e} - source: server.ts - on editUser`);
+      });
   });
 });
 

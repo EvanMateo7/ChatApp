@@ -14,7 +14,6 @@ const db = admin.firestore();
 
 export async function addUser(user: admin.auth.UserInfo) {
   const usersRef = db.collection('users');
-
   const userExists: boolean = await usersRef.doc(user.uid).get().then( user => user.exists);
       
   if(!userExists) {
@@ -31,6 +30,17 @@ export async function addUser(user: admin.auth.UserInfo) {
     console.error(`user ${user.uid} already exists.`);
   }
 };
+
+
+export async function editUser(user: User) {
+  const usersRef = db.collection('users');
+  const userExists: boolean = await usersRef.doc(user.id).get().then( user => user.exists);
+  
+  if(userExists) {
+    // TODO: Validate photo url
+    return usersRef.doc(user.id).set(user, {merge: true});
+  }
+}
 
 
 export async function joinRoom(roomjoin: RoomJoin) {

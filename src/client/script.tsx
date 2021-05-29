@@ -5,7 +5,7 @@ import { io } from "socket.io-client";
 import { UserContextProvider } from "./components/UserContext";
 
 // Setup
-const socket = io();
+export const socket = io();
 
 // React
 ReactDOM.render(
