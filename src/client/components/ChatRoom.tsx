@@ -69,7 +69,7 @@ export const ChatRoom = (props: ChatRoomProps) => {
       timestamp: Date.now()
     }
 
-    props.socket.emit('message', newMessage);
+    props.socket.emit('addMessage', newMessage);
     setMessageInput("");
   }
 

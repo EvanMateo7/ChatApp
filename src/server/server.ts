@@ -55,18 +55,18 @@ io.on('connect', (socket) => {
     });
   });
 
-  socket.on('message', (message: Message) => {
+  socket.on('addMessage', (message: Message) => {
     firebaseServer.addMessage(message.roomID, message)
       .then(() => {
-        console.log(`message - ${JSON.stringify(message)}`);
+        console.log(`addMessage - ${JSON.stringify(message)}`);
       })
-      .catch(e => console.error(`${e} - source: server.ts - on message`));
+      .catch(e => console.error(`${e} - source: server.ts - on addMessage`));
   });
 
-  socket.on('login', (user: admin.auth.UserInfo) => {
+  socket.on('addUser', (user: admin.auth.UserInfo) => {
     firebaseServer.addUser(user)
-      .then(() => console.log(`login - user: ${user.displayName}`))
-      .catch(e => console.error(`${e} - source: server.ts - on login`));
+      .then(() => console.log(`addUser - user: ${user.displayName}`))
+      .catch(e => console.error(`${e} - source: server.ts - on addUser`));
   });
 });
 
