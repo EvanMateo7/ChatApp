@@ -52,16 +52,12 @@ io.on('connect', (socket) => {
 
       // Emit to everyone in room including emitter
       io.to(roomID).emit('clients', roomID, clients);
-
-      // Emit to self current room
-      io.to(socket.id).emit('newRoom', roomID);
     });
   });
 
   socket.on('message', (message: Message) => {
     firebaseServer.addMessage(message.roomID, message)
       .then(() => {
-        io.in(message.roomID).emit('receiveMessage', message)
         console.log(`message - ${JSON.stringify(message)}`);
       })
       .catch(e => console.error(`${e} - source: server.ts - on message`));
