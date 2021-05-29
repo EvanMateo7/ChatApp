@@ -28,8 +28,8 @@ export const ProfileEdit = (props: ProfileEditProps) => {
     validationSchema: UserSchema,
     
     onSubmit: async (user, { setSubmitting, setErrors }) => {
-      socket.emit("editUser", user, (error: object) => {
-        if (error instanceof InvalidPhotoURL) {
+      socket.emit("editUser", user, (error: Error) => {
+        if (error.name == InvalidPhotoURL.name) {
           setErrors({
             "photoURL": "Invalid Photo URL"
           });
