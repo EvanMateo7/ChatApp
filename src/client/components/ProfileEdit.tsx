@@ -27,7 +27,7 @@ export const ProfileEdit = (props: ProfileEditProps) => {
     initialValues: props.user,
     validationSchema: UserSchema,
     
-    onSubmit: async (user, { setSubmitting, setErrors }) => {
+    onSubmit: (user, { setSubmitting, setErrors }) => {
       socket.emit("editUser", user, (error: Error) => {
         if (error.name == InvalidPhotoURL.name) {
           setErrors({
@@ -35,9 +35,9 @@ export const ProfileEdit = (props: ProfileEditProps) => {
           });
         }
         else {
-          setSubmitting(false);
           props.handleClose();
         }
+        setSubmitting(false);
       });
     }
   });
