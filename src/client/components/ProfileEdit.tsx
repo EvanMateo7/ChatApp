@@ -9,8 +9,9 @@ import TextField from '@material-ui/core/TextField';
 import { useFormik } from 'formik';
 import React, { useEffect } from 'react';
 import { User } from '../../models';
-import { editProfile } from '../authService';
 import { object, SchemaOf, string } from 'yup';
+import { socket } from '../script';
+import { InvalidPhotoURL } from '../../customErrors';
 
 interface ProfileEditProps { user: User, open: boolean, handleClose: () => void }
 
@@ -25,10 +26,19 @@ export const ProfileEdit = (props: ProfileEditProps) => {
   const formik = useFormik({
     initialValues: props.user,
     validationSchema: UserSchema,
-    onSubmit: async (user, { setSubmitting }) => {
-      await editProfile(user);
-      setSubmitting(false);
-      props.handleClose();
+    
+    onSubmit: async (user, { setSubmitting, setErrors }) => {
+      socket.emit("editUser", user, (error: Error) => {
+        if (error.name == InvalidPhotoURL.name) {
+          setErrors({
+            "photoURL": "Invalid Photo URL"
+          });
+        }
+        else {
+          setSubmitting(false);
+          props.handleClose();
+        }
+      });
     }
   });
 

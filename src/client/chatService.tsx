@@ -42,6 +42,7 @@ export const useChatRooms = (socket: Socket, user: User | null) => {
 
 export const useChatRoom = (roomID: string) => {
   const [messages, setMessages] = useState<Message[] | null>(null);
+  const [users, setUsers] = useState<{[key: string]: User} | null>(null);
 
   useEffect(() => {
     if (roomID) {
@@ -84,10 +85,58 @@ export const useChatRoom = (roomID: string) => {
             console.error(error);
           }
         );
+
+      // Get and listen to room users
+      let unsubscribeUsers = firestore.collection("rooms")
+        .doc(roomID)
+        .onSnapshot(
+          (snapshot) => {
+            const users = snapshot.data()?.users as Array<Array<any>>;
+
+            if (users) {
+              const usersSublists = users.reduce((accumulator, currentValue, index, array) => {
+                const lastSublist = accumulator[accumulator.length - 1];
+                if (Array.isArray(lastSublist) && lastSublist.length < 10) {
+                  lastSublist.push(currentValue);
+                }
+                else {
+                  accumulator.push([currentValue]);
+                }
+                return accumulator;
+              }, []);
+              
+              const userSnapshotsPromises = usersSublists.map(usersSublist => {
+                return firestore.collection("users")
+                  .where("id", "in", usersSublist)
+                  .get();
+                });
+                
+              Promise.all(userSnapshotsPromises).then((userSnapshots) => {
+                const allUsers = {} as {[key: string]: User};
+
+                userSnapshots.map(snapshot => {
+                  snapshot.docs.map(doc => {
+                    const data = doc.data() as User;
+                    allUsers[data.id] = data;
+                    console.log("users", allUsers);
+                  })
+                })
+
+                setUsers(allUsers);
+              });
+            }
+          },
+          (error: firebase.firestore.FirestoreError) => {
+            console.error(error);
+          }
+        );
       
-      return unsubscribeMessages;
+      return () => {
+        unsubscribeMessages();
+        unsubscribeUsers();
+      }
     }
   }, [roomID]);
 
-  return messages;
+  return [users, messages] as const;
 }

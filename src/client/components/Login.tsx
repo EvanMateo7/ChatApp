@@ -9,7 +9,7 @@ export const Login = (props: any) => {
   const login = () => {
     googleLogin().then( user => {
       if (user) {
-        props.socket.emit('login', user);
+        props.socket.emit('addUser', user);
       }
     });
   }

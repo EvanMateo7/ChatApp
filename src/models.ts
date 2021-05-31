@@ -2,7 +2,6 @@
 export interface Message {
     roomID: string
     userID: string,
-    userName: string,
     message: string,
     timestamp: number
 }

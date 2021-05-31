@@ -2,7 +2,7 @@
 import express from "express";
 import { Server as SocketIOServer } from "socket.io";
 import * as firebaseServer from "./firebaseServer";
-import { Message, RoomJoin } from "../models";
+import { Message, RoomJoin, User } from "../models";
 import * as admin from "firebase-admin";
 
 // Setup
@@ -52,25 +52,33 @@ io.on('connect', (socket) => {
 
       // Emit to everyone in room including emitter
       io.to(roomID).emit('clients', roomID, clients);
-
-      // Emit to self current room
-      io.to(socket.id).emit('newRoom', roomID);
     });
   });
 
-  socket.on('message', (message: Message) => {
+  socket.on('addMessage', (message: Message) => {
     firebaseServer.addMessage(message.roomID, message)
       .then(() => {
-        io.in(message.roomID).emit('receiveMessage', message)
-        console.log(`message - ${JSON.stringify(message)}`);
+        console.log(`addMessage - ${JSON.stringify(message)}`);
       })
-      .catch(e => console.error(`${e} - source: server.ts - on message`));
+      .catch(e => console.error(`${e} - source: server.ts - on addMessage`));
   });
 
-  socket.on('login', (user: admin.auth.UserInfo) => {
+  socket.on('addUser', (user: admin.auth.UserInfo) => {
     firebaseServer.addUser(user)
-      .then(() => console.log(`login - user: ${user.displayName}`))
-      .catch(e => console.error(`${e} - source: server.ts - on login`));
+      .then(() => console.log(`addUser - user: ${user.displayName}`))
+      .catch(e => console.error(`${e} - source: server.ts - on addUser`));
+  });
+
+  socket.on('editUser', (user: User, ack: Function) => {
+    firebaseServer.editUser(user)
+      .then(() => {
+        ack({});
+        console.log(`editUser - user: ${user.id}`);
+      })
+      .catch(e => {
+        ack(e);
+        console.error(`${e} - source: server.ts - on editUser`);
+      });
   });
 });
 
