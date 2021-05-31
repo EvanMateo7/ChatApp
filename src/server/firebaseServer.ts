@@ -1,5 +1,7 @@
 import * as admin from "firebase-admin";
 import { Message, RoomJoin, User } from "../models";
+import { isValidImageURL } from "./utils";
+import { InvalidPhotoURL } from "../customErrors";
 
 
 admin.initializeApp({
@@ -37,7 +39,10 @@ export async function editUser(user: User) {
   const userExists: boolean = await usersRef.doc(user.id).get().then( user => user.exists);
   
   if(userExists) {
-    // TODO: Validate photo url
+    const isValidPhotoURL = await isValidImageURL(user.photoURL);
+    if (!isValidPhotoURL) {
+      throw new InvalidPhotoURL();
+    }
     return usersRef.doc(user.id).set(user, {merge: true});
   }
 }
