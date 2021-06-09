@@ -11,10 +11,10 @@ import Typography from "@material-ui/core/Typography";
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import React, { useRef, useState, useContext } from "react";
 import { useChatRooms } from "../chatService";
+import { AppBarUserAvatar } from "./AppBarUserAvatar";
 import { ChatRoom } from "./ChatRoom";
 import { Login } from "./Login";
 import { RoomList } from "./RoomList";
-import { UserAvatar } from "./UserAvatar";
 import { UserContext } from "./UserContext";
 
 
@@ -57,7 +57,8 @@ export const App = (props: any) => {
   const drawerRef = useRef<HTMLDivElement>(null);
   const classes = makeStyles((theme) => ({
     appBar: {
-      minHeight: 70,
+      minHeight: "min-content",
+      minWidth: "min-content",
     },
     shifted: {
       width: `calc(100% - ${drawerRef?.current?.offsetWidth}px)`,
@@ -92,7 +93,7 @@ export const App = (props: any) => {
             {
               !user
                 ? <Login socket={props.socket} />
-                : <UserAvatar user={user!} logout={logout!} />
+                : <AppBarUserAvatar user={user!} logout={logout!} />
             }
           </Toolbar>
         </AppBar>
