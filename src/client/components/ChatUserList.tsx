@@ -11,7 +11,7 @@ export interface ChatUserListProps { users: { [key: string]: User } | null }
 export const ChatUserList = (props: ChatUserListProps) => {
 
   return (
-    <Box display="flex" flexDirection="column" height="100%" padding="15px" >
+    <Box display="flex" flexDirection="column" height="100%" padding="15px" overflow="auto" minWidth="min-content">
       <List
         component="nav"
         subheader={

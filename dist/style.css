@@ -1,5 +1,6 @@
 html, body, #root, .main_container {
   height: 100%;
+  min-width: min-content;
 }
 
 body {
