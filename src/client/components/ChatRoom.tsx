@@ -13,17 +13,25 @@ import LinearProgress from "@material-ui/core/LinearProgress";
 import Avatar from "@material-ui/core/Avatar";
 import formatRelative from 'date-fns/formatRelative'
 import Typography from "@material-ui/core/Typography";
+import { ChatUserList } from "./ChatUserList";
 
 interface ChatRoomProps { roomID: string, user: User, socket: Socket }
 interface ChatMessageProps { user: User, message: Message }
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    display: "flex",
+    justifyContent: "space-around",
+    height: "100%",
+
+  },
   chatRoom: {
     display: "flex",
     flexDirection: "column",
     justifyContent: "flex-end",
     padding: 20,
-    height: "100%",
+    flexGrow: 1,
+    minWidth: 0,
   },
   chatWall: {
     display: "flex",
@@ -38,6 +46,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     alignItems: "center",
     width: "100%",
+    overflow: "hidden",
   },
   input: {
     flexGrow: 1,
@@ -91,20 +100,23 @@ export const ChatRoom = (props: ChatRoomProps) => {
   }
 
   return (
-    <Box className={classes.chatRoom}>
-      <Box className={classes.chatWall}>
-        {
-          messages !== null && users
-            ? messages.map((m: Message) => <ChatMessage user={users[m.userID]} message={m} />)
-            : <LinearProgress />
-        }
+    <Box className={classes.root}>
+      <Box className={classes.chatRoom}>
+        <Box className={classes.chatWall}>
+          {
+            messages !== null && users
+              ? messages.map((m: Message) => <ChatMessage user={users[m.userID]} message={m} />)
+              : <LinearProgress />
+          }
+        </Box>
+        <Paper className={classes.chatForm} color="primary" elevation={4} component="form" onSubmit={handleSubmit}>
+          <InputBase id="message" className={classes.input} multiline rows={4} placeholder="Message" onKeyDown={handleKeyDown}
+            value={messageInput} onChange={handleMessageChange} />
+          <Divider orientation="vertical" />
+          <Button type="submit" className={classes.sendBtn} color="primary"><SendIcon></SendIcon></Button>
+        </Paper>
       </Box>
-      <Paper className={classes.chatForm} color="primary" elevation={4} component="form" onSubmit={handleSubmit}>
-        <InputBase id="message" className={classes.input} multiline rows={4} placeholder="Message" onKeyDown={handleKeyDown}
-          value={messageInput} onChange={handleMessageChange} />
-        <Divider orientation="vertical" />
-        <Button type="submit" className={classes.sendBtn} color="primary"><SendIcon></SendIcon></Button>
-      </Paper>
+      <ChatUserList users={users} />
     </Box>
   );
 }
