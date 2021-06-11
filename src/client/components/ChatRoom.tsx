@@ -1,18 +1,20 @@
-import React, { useState } from "react";
+import Avatar from "@material-ui/core/Avatar";
 import Box from '@material-ui/core/Box';
-import SendIcon from '@material-ui/icons/Send';
-import { Message, User } from '../../models'
-import { makeStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
-import InputBase from "@material-ui/core/InputBase";
 import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
-import { Socket } from "socket.io";
-import { useChatRoom } from "../chatService";
+import Fab from "@material-ui/core/Fab";
+import InputBase from "@material-ui/core/InputBase";
 import LinearProgress from "@material-ui/core/LinearProgress";
-import Avatar from "@material-ui/core/Avatar";
-import formatRelative from 'date-fns/formatRelative'
+import Paper from "@material-ui/core/Paper";
+import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
+import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
+import SendIcon from '@material-ui/icons/Send';
+import formatRelative from 'date-fns/formatRelative';
+import React, { useState } from "react";
+import { Socket } from "socket.io";
+import { Message, User } from '../../models';
+import { useChatRoom } from "../chatService";
 import { ChatUserList } from "./ChatUserList";
 
 interface ChatRoomProps { roomID: string, user: User, socket: Socket }
@@ -20,10 +22,11 @@ interface ChatMessageProps { user: User, message: Message }
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    position: "relative",
     display: "flex",
     justifyContent: "space-around",
     height: "100%",
-
+    overflow: "hidden",
   },
   chatRoom: {
     display: "flex",
@@ -55,6 +58,11 @@ const useStyles = makeStyles((theme) => ({
   sendBtn: {
     height: "100%",
   },
+  fab: {
+    position: 'absolute',
+    top: theme.spacing(2),
+    right: theme.spacing(2),
+  },
 }));
 
 export const ChatRoom = (props: ChatRoomProps) => {
@@ -62,6 +70,11 @@ export const ChatRoom = (props: ChatRoomProps) => {
   const classes = useStyles();
   const [users, messages] = useChatRoom(props.roomID);
   const [messageInput, setMessageInput] = useState("");
+  const [isUserListOpen, setUserListOpen] = useState(false);
+
+  const toggleUserList = () => {
+    setUserListOpen((open) => !open);
+  }
 
   const sendMessage = () => {
     if (messageInput.trim() == "") {
@@ -116,7 +129,10 @@ export const ChatRoom = (props: ChatRoomProps) => {
           <Button type="submit" className={classes.sendBtn} color="primary"><SendIcon></SendIcon></Button>
         </Paper>
       </Box>
-      <ChatUserList users={users} />
+      <Fab size="small" onClick={toggleUserList} className={classes.fab}>
+        <PeopleAltIcon />
+      </Fab>
+      <ChatUserList users={users} open={isUserListOpen} toggleUserList={toggleUserList} />
     </Box>
   );
 }

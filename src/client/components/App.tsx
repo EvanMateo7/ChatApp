@@ -45,7 +45,7 @@ const theme = createMuiTheme({
           backgroundColor: "transparent",
         },
         "*::-webkit-scrollbar-thumb": {
-          backgroundColor: baseTheme.palette.background.paper,
+          backgroundColor: baseTheme.palette.grey["600"],
           borderRadius: "8px"
         }
       },
