@@ -10,6 +10,7 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import React from "react";
 import { User } from "../../models";
 import { UserAvatar } from "./UserAvatar";
+import { UserInfoPopper } from "./UserInfoPopper";
 
 export interface ChatUserListProps { users: { [key: string]: User } | null, open: boolean, toggleUserList: () => void }
 
@@ -44,9 +45,11 @@ export const ChatUserList = (props: ChatUserListProps) => {
           }>
           {props.users && Object.values(props.users).map(user =>
             <>
-              <ListItem button>
-                <UserAvatar user={user} />
-              </ListItem>
+              <UserInfoPopper user={user} side="left-start">
+                <ListItem button>
+                    <UserAvatar user={user} />
+                </ListItem>
+              </UserInfoPopper>
             </>
           )}
         </List>
