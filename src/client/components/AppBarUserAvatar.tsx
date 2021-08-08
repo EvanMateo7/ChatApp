@@ -48,7 +48,9 @@ export const AppBarUserAvatar = (props: UserProps) => {
 
   return (
     <>
-      <UserAvatar user={props.user} onClick={handleOpenMenu} />
+      <div onClick={handleOpenMenu}>
+        <UserAvatar user={props.user} />
+      </div>
       <Menu
         keepMounted
         open={open}
