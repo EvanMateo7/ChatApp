@@ -16,6 +16,7 @@ import { Socket } from "socket.io";
 import { Message, User } from '../../models';
 import { useChatRoom } from "../chatService";
 import { ChatUserList } from "./ChatUserList";
+import { UserInfoPopper } from "./UserInfoPopper";
 
 interface ChatRoomProps { roomID: string, user: User, socket: Socket }
 interface ChatMessageProps { user: User, message: Message }
@@ -152,7 +153,9 @@ const ChatMessage = (props: ChatMessageProps) => {
         justifyContent="space-between"
         gridGap="5px">
         <div>
-          <b>{props.user?.name + " "}</b>
+          <UserInfoPopper user={props.user} side="right-start">
+            <b>{props.user?.name + " "}</b>
+          </UserInfoPopper>
           <Typography variant="caption" color="textSecondary">
             {formatRelative(props.message?.timestamp, new Date())}
           </Typography>

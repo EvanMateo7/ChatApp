@@ -17,6 +17,9 @@ const useStyles = makeStyles((theme) => ({
     height: theme.spacing(2 + 14 / 2), // Container padding + half of avatar height
     background: theme.palette.background.default,
   },
+  clickable: {
+    cursor: "pointer",
+  },
 }));
 
 export const UserInfoPopper = (props: UserInfoPopperProps) => {
@@ -36,9 +39,9 @@ export const UserInfoPopper = (props: UserInfoPopperProps) => {
 
   return (
     <>
-      <div onClick={handleClickOpen}>
+      <span className={classes.clickable} onClick={handleClickOpen}>
         {props.children}
-      </div>
+      </span>
       {
         open
         &&
