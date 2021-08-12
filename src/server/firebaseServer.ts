@@ -25,11 +25,11 @@ export async function addUser(user: admin.auth.UserInfo) {
       photoURL: user.photoURL
     }
     usersRef.doc(user.uid).set(newUser)
-      .then( () => console.log(`new user created with userID ${user.uid}`))
-      .catch( e => console.error(`${e} - source: firebaseServer.ts - addUser`));;
+      .then( () => console.log(`New user created with userID ${user.uid}`))
+      .catch( e => console.error(`Error: failed to create new user with userID ${user.uid}. ${e}`));;
   }
   else {
-    console.error(`user ${user.uid} already exists.`);
+    console.error(`Error: failed to create new user with userID ${user.uid}. User already exists.`);
   }
 };
 
@@ -43,16 +43,19 @@ export async function editUser(user: User) {
     if (!isValidPhotoURL) {
       throw new InvalidPhotoURL();
     }
-    return usersRef.doc(user.id).set(user, {merge: true});
+    return usersRef.doc(user.id).set(user, {merge: true})
+      .then(() => console.log(`User ${user.id} was edited`))
+      .catch( e => console.error(`Error: user ${user.id} failed to be edited. ${e}`) );
   }
 }
 
 
-export async function joinRoom(roomjoin: RoomJoin) {
+export async function joinRoom(roomJoin: RoomJoin) {
   const roomRef = db.collection("rooms");
   
-  return roomRef.doc(roomjoin.roomID).set({users: admin.firestore.FieldValue.arrayUnion(roomjoin.userID)}, {merge: true})
-    .catch( e => console.error(`${e} - source firebaseServer.ts - joinRoom`) );
+  return roomRef.doc(roomJoin.roomID).set({users: admin.firestore.FieldValue.arrayUnion(roomJoin.userID)}, {merge: true})
+    .then(() => console.log(`User ${roomJoin.userID} joined room ${roomJoin.roomID}`) )
+    .catch( e => console.error(`Error: user ${roomJoin.userID} failed to join room ${roomJoin.roomID}. ${e}`) );
 }
 
 
@@ -62,7 +65,9 @@ export async function addMessage(roomID: string, message: Message) {
   const roomExists: boolean = await roomRef.doc(roomID).get().then( room => room.exists );
 
   if(roomExists) {
-    roomRef.doc(roomID).collection("messages").doc().create(message)
-      .catch( e => console.error(`${e} - source firebaseServer.ts - addMessage`) );
+    const newMessage = roomRef.doc(roomID).collection("messages").doc();
+    newMessage.create(message)
+      .then(() => console.log(`New message ${newMessage.id} created in room ${roomID}`) )
+      .catch( e => console.error(`Error: failed to create new message in room ${roomID} from user ${message.userID}. ${e}`) );
   }
 }

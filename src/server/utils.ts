@@ -26,7 +26,7 @@ export function isValidImageURL(url: string) {
 
         response.on("close", () => {
           try {
-            console.log("MIME", imageType(data)?.mime)
+            console.log(`Image is type ${imageType(data)?.mime} ${url}`)
             resolve(allowedImageMIMETypes.includes(imageType(data)?.mime ?? ''));
           }
           catch (e) {

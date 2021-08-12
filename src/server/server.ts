@@ -36,14 +36,12 @@ io.on('connect', (socket) => {
         socket.join(roomID);
         socket.leave(currentRoomID)
         currentRoomID = roomID;
-        console.log(`joinRoom - ${JSON.stringify(roomJoin)}`);
         callback(true);
 
         // Emit to self all my rooms
         io.to(socket.id).emit('myRooms', Array.from(socket.rooms));
       })
       .catch(e => {
-        console.error(`${e} - source server.ts - on joinRoom`);
         callback(false);
       });
 
@@ -56,29 +54,17 @@ io.on('connect', (socket) => {
   });
 
   socket.on('addMessage', (message: Message) => {
-    firebaseServer.addMessage(message.roomID, message)
-      .then(() => {
-        console.log(`addMessage - ${JSON.stringify(message)}`);
-      })
-      .catch(e => console.error(`${e} - source: server.ts - on addMessage`));
+    firebaseServer.addMessage(message.roomID, message);
   });
 
   socket.on('addUser', (user: admin.auth.UserInfo) => {
-    firebaseServer.addUser(user)
-      .then(() => console.log(`addUser - user: ${user.displayName}`))
-      .catch(e => console.error(`${e} - source: server.ts - on addUser`));
+    firebaseServer.addUser(user);
   });
 
   socket.on('editUser', (user: User, ack: Function) => {
     firebaseServer.editUser(user)
-      .then(() => {
-        ack({});
-        console.log(`editUser - user: ${user.id}`);
-      })
-      .catch(e => {
-        ack(e);
-        console.error(`${e} - source: server.ts - on editUser`);
-      });
+      .then(() => ack({}))
+      .catch(e => ack(e));
   });
 });
 
