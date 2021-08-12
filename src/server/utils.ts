@@ -12,7 +12,7 @@ export function isValidImageURL(url: string) {
   return new Promise<boolean>((resolve) => {
     try {
       const options = new URL(url);
-      
+
       const request = https.get(options, response => {
         let data: Buffer;
 
