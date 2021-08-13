@@ -1,9 +1,9 @@
 
 import express from "express";
-import { Server as SocketIOServer } from "socket.io";
-import * as firebaseServer from "./firebaseServer";
-import { Message, RoomJoin, User } from "../models";
 import * as admin from "firebase-admin";
+import { Server as SocketIOServer } from "socket.io";
+import { Message, RoomJoin, User } from "../models";
+import * as firebaseServer from "./firebaseServer";
 
 // Setup
 const app = express();
@@ -12,60 +12,66 @@ app.use(express.static('dist'));
 
 console.log("Express server starting...");
 
-// SocketIO
-const io = new SocketIOServer(server);
+// Create SocketIO server
+const socketIOServer = (server: any, firebaseServer: any) => {
+  const io = new SocketIOServer(server);
+  io.on('connect', (socket) => {
+    console.log(`socket has connected with ID: ${socket.id}`);
 
-io.on('connect', (socket) => {
-  console.log(`socket has connected with ID: ${socket.id}`);
+    // Singleton room
+    let currentRoomID = '';
 
-  // Singleton room
-  let currentRoomID = '';
+    // Room
+    socket.on('joinRoom', (roomJoin: RoomJoin, ack: Function) => {
+      const roomID = roomJoin.roomID;
 
-  // Room
-  socket.on('joinRoom', (roomJoin: RoomJoin, callback: Function) => {
-    const roomID = roomJoin.roomID;
+      // Check if socket is already in room
+      if (socket.rooms.has(roomID)) {
+        return;
+      }
 
-    // Check if socket is already in room
-    if (socket.rooms.has(roomID)) {
-      return;
-    }
+      // Create and join room
+      firebaseServer.joinRoom(roomJoin)
+        .then(() => {
+          socket.join(roomID);
+          socket.leave(currentRoomID)
+          currentRoomID = roomID;
+          ack(true);
 
-    // Create and join room
-    firebaseServer.joinRoom(roomJoin)
-      .then(() => {
-        socket.join(roomID);
-        socket.leave(currentRoomID)
-        currentRoomID = roomID;
-        callback(true);
+          // Emit to self all my rooms
+          io.to(socket.id).emit('myRooms', Array.from(socket.rooms));
+        })
+        .catch((e: any) => {
+          ack(false);
+        });
 
-        // Emit to self all my rooms
-        io.to(socket.id).emit('myRooms', Array.from(socket.rooms));
-      })
-      .catch(e => {
-        callback(false);
+      // Get clients
+      io.in(roomID).allSockets().then((clients: Set<string>) => {
+
+        // Emit to everyone in room including emitter
+        io.to(roomID).emit('clients', roomID, clients);
       });
+    });
 
-    // Get clients
-    io.in(roomID).allSockets().then((clients: Set<string>) => {
+    socket.on('addMessage', (message: Message) => {
+      firebaseServer.addMessage(message.roomID, message);
+    });
 
-      // Emit to everyone in room including emitter
-      io.to(roomID).emit('clients', roomID, clients);
+    socket.on('addUser', (user: admin.auth.UserInfo) => {
+      firebaseServer.addUser(user);
+    });
+
+    socket.on('editUser', (user: User, ack: Function) => {
+      firebaseServer.editUser(user)
+        .then(() => ack({}))
+        .catch((e: any) => ack(e));
     });
   });
 
-  socket.on('addMessage', (message: Message) => {
-    firebaseServer.addMessage(message.roomID, message);
-  });
+  return io;
+}
 
-  socket.on('addUser', (user: admin.auth.UserInfo) => {
-    firebaseServer.addUser(user);
-  });
-
-  socket.on('editUser', (user: User, ack: Function) => {
-    firebaseServer.editUser(user)
-      .then(() => ack({}))
-      .catch(e => ack(e));
-  });
-});
-
+socketIOServer(server, firebaseServer);
 console.log("Express server started!");
+
+export default socketIOServer;
