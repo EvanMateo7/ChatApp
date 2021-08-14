@@ -24,12 +24,11 @@ describe('socket io server', () => {
     httpServer = createServer().listen(PORT, () => {
       console.log(`http server created on port ${PORT}`);
     });
-    clientSocket = client(`http://localhost:${PORT}`);
     socketIOServer(httpServer, firebaseServer);
   });
 
-  afterEach((done) => {
-    done();
+  beforeEach(() => {
+    clientSocket = client(`http://localhost:${PORT}`);
   });
 
   describe('join room', () => {
