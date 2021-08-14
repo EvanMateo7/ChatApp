@@ -45,7 +45,10 @@ export async function editUser(user: User) {
     }
     return usersRef.doc(user.id).set(user, { merge: true })
       .then(() => console.log(`User ${user.id} was edited`))
-      .catch(e => console.error(`Error: user ${user.id} failed to be edited. ${e}`));
+      .catch(e => {
+        console.error(`Error: user ${user.id} failed to be edited. ${e}`);
+        throw e;
+      });
   }
 }
 
@@ -55,7 +58,10 @@ export async function joinRoom(roomJoin: RoomJoin) {
 
   return roomRef.doc(roomJoin.roomID).set({ users: admin.firestore.FieldValue.arrayUnion(roomJoin.userID) }, { merge: true })
     .then(() => console.log(`User ${roomJoin.userID} joined room ${roomJoin.roomID}`))
-    .catch(e => console.error(`Error: user ${roomJoin.userID} failed to join room ${roomJoin.roomID}. ${e}`));
+    .catch(e => {
+      console.error(`Error: user ${roomJoin.userID} failed to join room ${roomJoin.roomID}. ${e}`);
+      throw e;
+    });
 }
 
 
