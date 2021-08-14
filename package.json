@@ -4,7 +4,7 @@
   "description": "Chat using SocketIO",
   "main": "server.js",
   "scripts": {
-    "test": "npx mocha -r ts-node/register --experimental-modules src/**/*.test.ts --timeout 5000 --exit",
+    "test": "npx mocha -r ts-node/register --experimental-modules src/**/*.test.ts --timeout 10000 --exit",
     "watchServer": "tsc --watch",
     "watchClient": "webpack --config webpack.dev.js",
     "dev": "concurrently --kill-others \"npm run watchServer\" \"npm run watchClient\"",
