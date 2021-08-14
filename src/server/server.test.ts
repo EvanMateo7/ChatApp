@@ -6,8 +6,8 @@ import { InvalidPhotoURL } from "../customErrors";
 
 // Setup mocks
 const firebaseAdminStub: any = {};
-firebaseAdminStub.initializeApp = (...args: any[]) => console.log("initializeApp() executed");
-firebaseAdminStub.firestore = () => console.log("firestore() executed");
+firebaseAdminStub.initializeApp = (...args: any[]) => null;
+firebaseAdminStub.firestore = () => null;
 const firebaseServer = proxyquire('./firebaseServer', { 'firebase-admin': firebaseAdminStub });
 
 // Import module to test
@@ -22,7 +22,7 @@ describe('socket io server', () => {
 
   before(() => {
     httpServer = createServer().listen(PORT, () => {
-      console.log('http server created')
+      console.log(`http server created on port ${PORT}`);
     });
     clientSocket = client(`http://localhost:${PORT}`);
     socketIOServer(httpServer, firebaseServer);
@@ -35,7 +35,6 @@ describe('socket io server', () => {
   describe('join room', () => {
     it('should return true on successful room join', (done) => {
       firebaseServer.joinRoom = () => new Promise<void>((res) => {
-        console.log('joined room');
         res();
       });
 
@@ -51,7 +50,6 @@ describe('socket io server', () => {
 
     it('should return false on failed room join', (done) => {
       firebaseServer.joinRoom = () => new Promise<void>((res, reject) => {
-        console.log('joined room');
         reject(new InvalidPhotoURL());
       });
 
@@ -69,7 +67,6 @@ describe('socket io server', () => {
   describe('edit user', () => {
     it('should return an empty object on successfully editing user', (done) => {
       firebaseServer.editUser = () => new Promise<void>((res) => {
-        console.log('edited user');
         res();
       });
 
