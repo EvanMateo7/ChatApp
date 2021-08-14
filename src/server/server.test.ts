@@ -50,7 +50,7 @@ describe('socket io server', () => {
 
     it('should return false on failed room join', (done) => {
       firebaseServer.joinRoom = () => new Promise<void>((res, reject) => {
-        reject(new InvalidPhotoURL());
+        reject(new Error());
       });
 
       clientSocket.emit("joinRoom", {}, (success: any) => {
@@ -73,6 +73,21 @@ describe('socket io server', () => {
       clientSocket.emit("editUser", {}, (error: Error) => {
         try {
           assert.deepStrictEqual(error, {});
+          done();
+        } catch (e) {
+          done(e);
+        }
+      });
+    });
+
+    it('should return an InvalidPhotoURL error when an invalid photo url is provided', (done) => {
+      firebaseServer.editUser = () => new Promise<void>((res, reject) => {
+        reject(new InvalidPhotoURL());
+      });
+
+      clientSocket.emit("editUser", {}, (error: Error) => {
+        try {
+          assert.equal(error.name, (new InvalidPhotoURL()).name);
           done();
         } catch (e) {
           done(e);
