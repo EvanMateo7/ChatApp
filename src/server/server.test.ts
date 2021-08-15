@@ -1,14 +1,11 @@
 const assert = require('assert');
-const proxyquire = require('proxyquire');
 import { createServer, Server } from "http";
 import { io as client, Socket } from "socket.io-client";
 import { InvalidPhotoURL } from "../customErrors";
 
 // Setup mocks
-const firebaseAdminStub: any = {};
-firebaseAdminStub.initializeApp = (...args: any[]) => null;
-firebaseAdminStub.firestore = () => null;
-const firebaseServer = proxyquire('./firebaseServer', { 'firebase-admin': firebaseAdminStub });
+import { firebaseServerStub } from './firebaseServerStub.test';
+const fsStub = firebaseServerStub()
 
 // Import module to test
 import socketIOServer from './server';
@@ -24,7 +21,7 @@ describe('socket io server', () => {
     httpServer = createServer().listen(PORT, () => {
       console.log(`http server created on port ${PORT}`);
     });
-    socketIOServer(httpServer, firebaseServer);
+    socketIOServer(httpServer, fsStub);
   });
 
   beforeEach(() => {
@@ -33,8 +30,8 @@ describe('socket io server', () => {
 
   describe('join room', () => {
     it('should return true on successful room join', (done) => {
-      firebaseServer.joinRoom = () => new Promise<void>((res) => {
-        res();
+      fsStub.joinRoom = () => new Promise((res) => {
+        res(true);
       });
 
       clientSocket.emit("joinRoom", {}, (success: any) => {
@@ -48,7 +45,7 @@ describe('socket io server', () => {
     });
 
     it('should return false on failed room join', (done) => {
-      firebaseServer.joinRoom = () => new Promise<void>((res, reject) => {
+      fsStub.joinRoom = () => new Promise((res, reject) => {
         reject(new Error());
       });
 
@@ -65,8 +62,8 @@ describe('socket io server', () => {
 
   describe('edit user', () => {
     it('should return an empty object on successfully editing user', (done) => {
-      firebaseServer.editUser = () => new Promise<void>((res) => {
-        res();
+      fsStub.editUser = () => new Promise((res) => {
+        res(true);
       });
 
       clientSocket.emit("editUser", {}, (error: Error) => {
@@ -80,7 +77,7 @@ describe('socket io server', () => {
     });
 
     it('should return an InvalidPhotoURL error when an invalid photo url is provided', (done) => {
-      firebaseServer.editUser = () => new Promise<void>((res, reject) => {
+      fsStub.editUser = () => new Promise((res, reject) => {
         reject(new InvalidPhotoURL());
       });
 
