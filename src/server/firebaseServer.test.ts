@@ -27,6 +27,16 @@ describe('firebase server', () => {
       assert.equal(result, true);
     });
 
+    it('should return false on failed adding non-existing user', async () => {
+      const firebaseAdminStub = new FirebaseAdminStub();
+      firebaseAdminStub.get = () => new Promise((res) => res({ exists: true }));
+      firebaseAdminStub.set = () => new Promise((res, reject) => reject());
+
+      const result = await firebaseServerStub(firebaseAdminStub).addUser(newFirebaseUserInfo);
+
+      assert.equal(result, false);
+    });
+
     it('should return false on failed adding existing user', async () => {
       const firebaseAdminStub = new FirebaseAdminStub();
       firebaseAdminStub.get = () => new Promise((res) => res({ exists: true }));
