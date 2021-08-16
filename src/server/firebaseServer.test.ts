@@ -6,7 +6,7 @@ import { FirebaseAdminStub, firebaseServerStub } from './firebaseServerStub.test
 
 // Test
 describe('firebase server', () => {
-  const newUser: admin.auth.UserInfo = {
+  const newFirebaseUserInfo: admin.auth.UserInfo = {
     uid: "uid",
     displayName: "displayName",
     email: "email",
@@ -21,7 +21,7 @@ describe('firebase server', () => {
       const firebaseAdminStub = new FirebaseAdminStub();
       firebaseAdminStub.get = () => new Promise((res) => res({ exists: false }));
 
-      const result = await firebaseServerStub(firebaseAdminStub).addUser(newUser);
+      const result = await firebaseServerStub(firebaseAdminStub).addUser(newFirebaseUserInfo);
 
       assert.equal(result, true);
     });
@@ -30,7 +30,7 @@ describe('firebase server', () => {
       const firebaseAdminStub = new FirebaseAdminStub();
       firebaseAdminStub.get = () => new Promise((res) => res({ exists: true }));
 
-      const result = await firebaseServerStub(firebaseAdminStub).addUser(newUser);
+      const result = await firebaseServerStub(firebaseAdminStub).addUser(newFirebaseUserInfo);
 
       assert.equal(result, false);
     });
