@@ -9,6 +9,20 @@ export const useChatRooms = (socket: Socket, user: User | null) => {
   const [currentRoom, setCurrentRoom] = useState("");
   const [rooms, setRooms] = useState([] as Array<string>);
 
+  useEffect(() => {
+    if (user?.id) {
+      (async () => {
+        await firestore.collection("rooms")
+          .where('users', 'array-contains', user.id)
+          .get()
+          .then((snapshot) => {
+            const roomIDs = snapshot.docs.map(doc => doc.id);
+            setRooms((rooms) => addNewRooms(rooms, roomIDs));
+          })
+      })();
+    }
+  }, [user]);
+
   const setRoom = (roomID: string) => {
     if (!user || !roomID || currentRoom == roomID) return;
     setCurrentRoom(roomID);
@@ -23,9 +37,9 @@ export const useChatRooms = (socket: Socket, user: User | null) => {
       } as RoomJoin,
         (success: boolean) => {
           success &&
-            setRooms((rooms: string[]) => {
-              setRoom(roomID)
-              return [...rooms, roomID];
+            setRooms((rooms) => {
+              setRoom(roomID);
+              return addNewRooms(rooms, [roomID]);
             });
         });
     }
@@ -35,6 +49,8 @@ export const useChatRooms = (socket: Socket, user: User | null) => {
   }
 
   const roomExists = (roomID: string) => rooms.indexOf(roomID) !== -1
+
+  const addNewRooms = (existingRooms: string[], roomIDs: string[]) => Array.from(new Set([...existingRooms, ...roomIDs]));
 
   return [currentRoom, rooms, setRoom, joinRoom] as const;
 }
@@ -46,7 +62,7 @@ export const useChatRoom = (roomID: string) => {
 
   useEffect(() => {
     if (roomID) {
-      
+
       (async () => {
         // Get some latest messages first
         await firestore.collection("rooms")
@@ -119,7 +135,6 @@ export const useChatRoom = (roomID: string) => {
                     snapshot.docs.map(doc => {
                       const data = doc.data() as User;
                       allUsers[data.id] = data;
-                      console.log("users", allUsers);
                     })
                   })
 
