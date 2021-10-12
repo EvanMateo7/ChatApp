@@ -23,14 +23,14 @@ socket.on('clients', (roomID: string, clients: any) => {
         roomID,
         clients
     };
-    console.log(data);
+    console.log('[socket] clients:', data);
 });
 
 socket.on('myRooms', (rooms: any) => {
     myRooms = rooms;
-    console.log("YOUR ROOMS", rooms);
+    console.log("[socket] my rooms:", rooms);
 });
 
 socket.on('error', (error: any) => {
-    console.log(error.message);
+    console.log("[socket] error:", error.message);
 })
