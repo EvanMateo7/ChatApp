@@ -2,12 +2,13 @@ import * as admin from "firebase-admin";
 import { Message, RoomJoin, User } from "../models";
 import { isValidImageURL } from "./utils";
 import { InvalidPhotoURL } from "../customErrors";
+import firebaseConfig from "../firebase.config.json";
 
 
 admin.initializeApp({
   // GOOGLE_APPLICATION_CREDENTIALS environment variable
   credential: admin.credential.applicationDefault(),
-  databaseURL: 'https://chatapp-58582.firebaseio.com'
+  databaseURL: firebaseConfig.databaseURL,
 });
 
 

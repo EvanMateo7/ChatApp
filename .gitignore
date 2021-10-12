@@ -3,3 +3,4 @@
 node_modules
 dist/*.js
 server/*
+firebase.config.json
