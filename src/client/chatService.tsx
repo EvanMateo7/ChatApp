@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { firestore } from "./firebaseClient";
 import { Socket } from "socket.io";
 import { Message, RoomJoin, User } from "../models";
+import { SocketEvent } from "../socketEvents";
 
 
 export const useChatRooms = (socket: Socket, user: User | null) => {
@@ -31,7 +32,7 @@ export const useChatRooms = (socket: Socket, user: User | null) => {
   const joinRoom = (roomID: string) => {
     if (!user || !roomID || currentRoom == roomID) return;
     if (!roomExists(roomID)) {
-      socket.emit("joinRoom", {
+      socket.emit(SocketEvent.JoinRoom, {
         roomID: roomID,
         userID: user.id
       } as RoomJoin,

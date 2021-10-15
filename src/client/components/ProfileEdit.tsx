@@ -12,6 +12,7 @@ import { User } from '../../models';
 import { object, SchemaOf, string } from 'yup';
 import { socket } from '../script';
 import { InvalidPhotoURL } from '../../customErrors';
+import { SocketEvent } from '../../socketEvents';
 
 interface ProfileEditProps { user: User, open: boolean, handleClose: () => void }
 
@@ -28,7 +29,7 @@ export const ProfileEdit = (props: ProfileEditProps) => {
     validationSchema: UserSchema,
     
     onSubmit: (user, { setSubmitting, setErrors }) => {
-      socket.emit("editUser", user, (error: Error) => {
+      socket.emit(SocketEvent.EditUser, user, (error: Error) => {
         if (error.name == InvalidPhotoURL.name) {
           setErrors({
             "photoURL": "Invalid Photo URL"

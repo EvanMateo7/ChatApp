@@ -2,6 +2,7 @@ const assert = require('assert');
 import { createServer, Server } from "http";
 import { io as client, Socket } from "socket.io-client";
 import { InvalidPhotoURL } from "../customErrors";
+import { SocketEvent } from "../socketEvents";
 
 // Setup mocks
 import { firebaseServerStub } from './firebaseServerStub.test';
@@ -34,7 +35,7 @@ describe('socket io server', () => {
         res(true);
       });
 
-      clientSocket.emit("joinRoom", {}, (success: any) => {
+      clientSocket.emit(SocketEvent.JoinRoom, {}, (success: any) => {
         try {
           assert.equal(success, true);
           done();
@@ -49,7 +50,7 @@ describe('socket io server', () => {
         reject(new Error());
       });
 
-      clientSocket.emit("joinRoom", {}, (success: any) => {
+      clientSocket.emit(SocketEvent.JoinRoom, {}, (success: any) => {
         try {
           assert.equal(success, false);
           done();
@@ -66,7 +67,7 @@ describe('socket io server', () => {
         res(true);
       });
 
-      clientSocket.emit("editUser", {}, (error: Error) => {
+      clientSocket.emit(SocketEvent.EditUser, {}, (error: Error) => {
         try {
           assert.deepStrictEqual(error, {});
           done();
@@ -81,7 +82,7 @@ describe('socket io server', () => {
         reject(new InvalidPhotoURL());
       });
 
-      clientSocket.emit("editUser", {}, (error: Error) => {
+      clientSocket.emit(SocketEvent.EditUser, {}, (error: Error) => {
         try {
           assert.equal(error.name, (new InvalidPhotoURL()).name);
           done();

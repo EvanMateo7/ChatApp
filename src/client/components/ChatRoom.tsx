@@ -14,6 +14,7 @@ import formatRelative from 'date-fns/formatRelative';
 import React, { useState } from "react";
 import { Socket } from "socket.io";
 import { Message, User } from '../../models';
+import { SocketEvent } from "../../socketEvents";
 import { useChatRoom } from "../chatService";
 import { ChatUserList } from "./ChatUserList";
 import { UserInfoPopper } from "./UserInfoPopper";
@@ -92,7 +93,7 @@ export const ChatRoom = (props: ChatRoomProps) => {
       timestamp: Date.now()
     }
 
-    props.socket.emit('addMessage', newMessage);
+    props.socket.emit(SocketEvent.AddMessage, newMessage);
     setMessageInput("");
   }
 

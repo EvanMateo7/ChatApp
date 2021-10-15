@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import { App } from "./components/App";
 import { io } from "socket.io-client";
 import { UserContextProvider } from "./components/UserContext";
+import { SocketEvent } from "../socketEvents";
 
 // Setup
 export const socket = io();
@@ -18,19 +19,19 @@ ReactDOM.render(
 let myRooms = {};
 
 // Listeners
-socket.on('clients', (roomID: string, clients: any) => {
+socket.on(SocketEvent.RoomClients, (roomID: string, clients: any) => {
     const data = {
         roomID,
         clients
     };
-    console.log('[socket] clients:', data);
+    console.log('[socket] room clients:', data);
 });
 
-socket.on('myRooms', (rooms: any) => {
+socket.on(SocketEvent.UserRooms, (rooms: any) => {
     myRooms = rooms;
     console.log("[socket] my rooms:", rooms);
 });
 
-socket.on('error', (error: any) => {
+socket.on(SocketEvent.Error, (error: any) => {
     console.log("[socket] error:", error.message);
 })
