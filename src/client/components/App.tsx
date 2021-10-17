@@ -5,6 +5,7 @@ import blue from '@material-ui/core/colors/blue';
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Drawer from "@material-ui/core/Drawer";
 import IconButton from "@material-ui/core/IconButton";
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { createMuiTheme, makeStyles, MuiThemeProvider } from "@material-ui/core/styles";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
@@ -72,6 +73,7 @@ export const App = (props: any) => {
   const { user, logout } = useContext(UserContext);
   const [currentRoom, rooms, setCurrentRoom, joinRoom] = useChatRooms(props.socket, user);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('xs'));
 
   const toggleRoomList = () => {
     setIsDrawerOpen((open) => !open);
@@ -103,7 +105,7 @@ export const App = (props: any) => {
         }
       </Box>
 
-      <Drawer anchor="left" variant="persistent" open={isDrawerOpen}>
+      <Drawer anchor="left" variant={isSmallScreen ? "temporary" : "persistent"} open={isDrawerOpen} onClose={toggleRoomList}>
         <div ref={drawerRef}>
           <Box display="flex" justifyContent="flex-end">
             <IconButton onClick={toggleRoomList}>

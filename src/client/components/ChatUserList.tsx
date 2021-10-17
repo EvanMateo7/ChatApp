@@ -17,6 +17,10 @@ export interface ChatUserListProps { users: { [key: string]: User } | null, open
 const useStyles = makeStyles((theme) => ({
   root: {
     position: "relative",
+    [theme.breakpoints.down("xs")]: {
+      position: "absolute",
+      right: 0,
+    },
     display: "flex",
     flexDirection: "column",
     height: "100%",
