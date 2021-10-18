@@ -17,3 +17,5 @@ There are `two` files importing the Firebase config file.
    https://github.com/EvanMateo7/ChatApp/blob/2dc6663f0a70f5b66d4720c11d4d3368d21b0dfc/src/client/firebaseClient.ts#L4
 2. firebaseServer
    https://github.com/EvanMateo7/ChatApp/blob/2dc6663f0a70f5b66d4720c11d4d3368d21b0dfc/src/server/firebaseServer.ts#L5
+
+<img title="Sample Firebase config file" src="https://user-images.githubusercontent.com/23142137/137660338-74116a95-f815-4ef3-8ecb-d5683b66c41f.png" width=500>
