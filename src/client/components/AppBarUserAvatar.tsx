@@ -1,13 +1,10 @@
-import React, { useState } from "react";
-import Avatar from '@material-ui/core/Avatar';
-import { makeStyles } from '@material-ui/core/styles';
-import { User } from '../../models';
-import { ProfileEditOpener } from './ProfileEditOpener';
+import Divider from '@material-ui/core/Divider';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import Divider from '@material-ui/core/Divider';
-import Box from '@material-ui/core/Box';
-import Typography from "@material-ui/core/Typography";
+import { makeStyles } from '@material-ui/core/styles';
+import React, { useState } from "react";
+import { User } from '../../models';
+import { ProfileEditOpener } from './ProfileEditOpener';
 import { UserAvatar } from "./UserAvatar";
 
 export interface UserProps { user: User, logout: Function }

@@ -1,5 +1,11 @@
-import { ClickAwayListener, Popper, Box, Paper, Avatar, Typography, makeStyles } from "@material-ui/core"
-import React, { ReactElement, useState } from "react"
+import Avatar from "@material-ui/core/Avatar";
+import Box from "@material-ui/core/Box";
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+import Paper from "@material-ui/core/Paper";
+import Popper from "@material-ui/core/Popper";
+import { makeStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
+import React, { ReactElement, useState } from "react";
 import { User } from "../../models";
 
 interface UserInfoPopperProps { children: ReactElement, user: User, side: 'left-start' | 'right-start' }

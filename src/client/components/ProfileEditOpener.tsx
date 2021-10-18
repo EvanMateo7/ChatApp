@@ -1,6 +1,6 @@
-import React, { FunctionComponent, ReactElement } from 'react';
-import { ProfileEdit } from './ProfileEdit';
+import React, { FunctionComponent } from 'react';
 import { User } from '../../models';
+import { ProfileEdit } from './ProfileEdit';
 
 interface ProfileEditOpenerProps { user: User }
 

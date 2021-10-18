@@ -1,19 +1,19 @@
 import Avatar from "@material-ui/core/Avatar";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
-import ImageIcon from '@material-ui/icons/Image';
+import Divider from "@material-ui/core/Divider";
 import FormControl from "@material-ui/core/FormControl";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import ListItemText from "@material-ui/core/ListItemText";
+import ListSubheader from "@material-ui/core/ListSubheader";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
+import ImageIcon from '@material-ui/icons/Image';
 import React, { useContext, useState } from "react";
-import { UserContext } from "./UserContext";
-import ListSubheader from "@material-ui/core/ListSubheader";
-import Divider from "@material-ui/core/Divider";
 import { Socket } from "socket.io";
+import { UserContext } from "./UserContext";
 
 export interface RoomListProps {
   socket: Socket,

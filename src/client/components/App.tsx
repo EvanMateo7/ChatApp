@@ -1,7 +1,7 @@
 import AppBar from "@material-ui/core/AppBar";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
-import blue from '@material-ui/core/colors/blue';
+import { blue } from '@material-ui/core/colors';
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Drawer from "@material-ui/core/Drawer";
 import IconButton from "@material-ui/core/IconButton";

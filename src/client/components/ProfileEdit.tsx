@@ -7,12 +7,12 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import FormControl from '@material-ui/core/FormControl';
 import TextField from '@material-ui/core/TextField';
 import { useFormik } from 'formik';
-import React, { useEffect } from 'react';
-import { User } from '../../models';
+import React from 'react';
 import { object, SchemaOf, string } from 'yup';
-import { socket } from '../script';
 import { InvalidPhotoURL } from '../../customErrors';
+import { User } from '../../models';
 import { SocketEvent } from '../../socketEvents';
+import { socket } from '../script';
 
 interface ProfileEditProps { user: User, open: boolean, handleClose: () => void }
 
