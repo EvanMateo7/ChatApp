@@ -1,6 +1,7 @@
 # ChatApp
 This is a small sample project using:
 - React
+- Material UI
 - Firebase
 - (little) Socket.IO
 
