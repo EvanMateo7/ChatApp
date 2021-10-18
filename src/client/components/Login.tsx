@@ -8,7 +8,7 @@ import { googleLogin } from "../authService";
 export const Login = (props: any) => {
 
   const login = () => {
-    googleLogin().then( user => {
+    googleLogin().then(user => {
       if (user) {
         props.socket.emit(SocketEvent.AddUser, user);
       }
@@ -16,6 +16,8 @@ export const Login = (props: any) => {
   }
 
   return (
-    <Box display="flex" alignItems="center"><Button color="inherit" onClick={login}><AccountCircleIcon />&nbsp;Google Sign In</Button></Box>
+    <Box display="flex" alignItems="center"><Button color="inherit" onClick={login}>
+      <AccountCircleIcon />&nbsp;Google Sign In</Button>
+    </Box>
   );
 }

@@ -2,7 +2,7 @@ import React, { FunctionComponent } from 'react';
 import { UserLogout } from '../../models';
 import { useCurrentUser } from '../authService';
 
-export const UserContext = React.createContext<UserLogout>({user: null, logout: null});
+export const UserContext = React.createContext<UserLogout>({ user: null, logout: null });
 
 export const UserContextProvider: FunctionComponent = (props) => {
   const [user, logout] = useCurrentUser();

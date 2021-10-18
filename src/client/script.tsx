@@ -20,18 +20,18 @@ let myRooms = {};
 
 // Listeners
 socket.on(SocketEvent.RoomClients, (roomID: string, clients: any) => {
-    const data = {
-        roomID,
-        clients
-    };
-    console.log('[socket] room clients:', data);
+  const data = {
+    roomID,
+    clients
+  };
+  console.log('[socket] room clients:', data);
 });
 
 socket.on(SocketEvent.UserRooms, (rooms: any) => {
-    myRooms = rooms;
-    console.log("[socket] my rooms:", rooms);
+  myRooms = rooms;
+  console.log("[socket] my rooms:", rooms);
 });
 
 socket.on(SocketEvent.Error, (error: any) => {
-    console.log("[socket] error:", error.message);
+  console.log("[socket] error:", error.message);
 })

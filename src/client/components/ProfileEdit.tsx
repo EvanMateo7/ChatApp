@@ -27,7 +27,7 @@ export const ProfileEdit = (props: ProfileEditProps) => {
   const formik = useFormik({
     initialValues: props.user,
     validationSchema: UserSchema,
-    
+
     onSubmit: (user, { setSubmitting, setErrors }) => {
       socket.emit(SocketEvent.EditUser, user, (error: Error) => {
         if (error.name == InvalidPhotoURL.name) {
@@ -49,7 +49,8 @@ export const ProfileEdit = (props: ProfileEditProps) => {
       maxWidth='sm'
       open={props.open}
       onClose={props.handleClose}
-      aria-labelledby="form-dialog-title">
+      aria-labelledby="form-dialog-title"
+    >
       <DialogTitle>Edit Profile</DialogTitle>
       <DialogContent>
 
@@ -61,7 +62,8 @@ export const ProfileEdit = (props: ProfileEditProps) => {
                 onChange={formik.handleChange}
                 error={formik.touched.name && Boolean(formik.errors.name)}
                 helperText={formik.touched.name && formik.errors.name}
-                margin="normal" label="Name" InputLabelProps={{ shrink: true, }} />
+                margin="normal" label="Name" InputLabelProps={{ shrink: true, }}
+              />
             </FormControl>
 
             <FormControl fullWidth={true}>
@@ -70,7 +72,8 @@ export const ProfileEdit = (props: ProfileEditProps) => {
                 onChange={formik.handleChange}
                 error={formik.touched.photoURL && Boolean(formik.errors.photoURL)}
                 helperText={formik.touched.photoURL && formik.errors.photoURL}
-                margin="normal" label="Photo URL" InputLabelProps={{ shrink: true, }} />
+                margin="normal" label="Photo URL" InputLabelProps={{ shrink: true, }}
+              />
             </FormControl>
 
             <DialogActions>
@@ -81,7 +84,8 @@ export const ProfileEdit = (props: ProfileEditProps) => {
                 type="submit"
                 variant="contained"
                 color="primary"
-                disabled={formik.isSubmitting}>
+                disabled={formik.isSubmitting}
+              >
                 Save
               </Button>
             </DialogActions>

@@ -45,17 +45,20 @@ export const ChatUserList = (props: ChatUserListProps) => {
           subheader={
             <ListSubheader disableSticky>
               Room Users
-              </ListSubheader>
-          }>
-          {props.users && Object.values(props.users).map(user =>
-            <>
-              <UserInfoPopper user={user} side="left-start">
-                <ListItem button>
+            </ListSubheader>
+          }
+        >
+          {
+            props.users && Object.values(props.users).map(user =>
+              <>
+                <UserInfoPopper user={user} side="left-start">
+                  <ListItem button>
                     <UserAvatar user={user} />
-                </ListItem>
-              </UserInfoPopper>
-            </>
-          )}
+                  </ListItem>
+                </UserInfoPopper>
+              </>
+            )
+          }
         </List>
       </Paper>
     </Slide>

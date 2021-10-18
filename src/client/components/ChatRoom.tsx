@@ -126,7 +126,8 @@ export const ChatRoom = (props: ChatRoomProps) => {
         </Box>
         <Paper className={classes.chatForm} color="primary" elevation={4} component="form" onSubmit={handleSubmit}>
           <InputBase id="message" className={classes.input} multiline rows={4} placeholder="Message" onKeyDown={handleKeyDown}
-            value={messageInput} onChange={handleMessageChange} />
+            value={messageInput} onChange={handleMessageChange}
+          />
           <Divider orientation="vertical" />
           <Button type="submit" className={classes.sendBtn} color="primary"><SendIcon></SendIcon></Button>
         </Paper>
@@ -146,13 +147,14 @@ const ChatMessage = (props: ChatMessageProps) => {
       display="flex"
       alignItems="center"
       gridGap="10px"
-      margin="10px">
-
+      margin="10px"
+    >
       <Avatar alt={props.user?.name} src={props.user?.photoURL} />
       <Box display="flex"
         flexDirection="column"
         justifyContent="space-between"
-        gridGap="5px">
+        gridGap="5px"
+      >
         <div>
           <UserInfoPopper user={props.user} side="right-start">
             <b>{props.user?.name + " "}</b>

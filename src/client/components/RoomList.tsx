@@ -68,26 +68,30 @@ export const RoomList = (props: RoomListProps) => {
         </FormControl>
       </form>
       <Divider variant="middle" />
-      {props.rooms && props.rooms.length > 0 &&
+      {
+        props.rooms && props.rooms.length > 0 &&
         <List
           component="nav"
           subheader={
             <ListSubheader>
               Rooms
             </ListSubheader>
-          }>
-          {props.rooms.map(roomID =>
-            <>
-              <ListItem button onClick={() => props.setCurrentRoom(roomID)} selected={roomID === props.currentRoom}>
-                <ListItemAvatar>
-                  <Avatar>
-                    <ImageIcon />
-                  </Avatar>
-                </ListItemAvatar>
-                <ListItemText primary={roomID} />
-              </ListItem>
-            </>
-          )}
+          }
+        >
+          {
+            props.rooms.map(roomID =>
+              <>
+                <ListItem button onClick={() => props.setCurrentRoom(roomID)} selected={roomID === props.currentRoom}>
+                  <ListItemAvatar>
+                    <Avatar>
+                      <ImageIcon />
+                    </Avatar>
+                  </ListItemAvatar>
+                  <ListItemText primary={roomID} />
+                </ListItem>
+              </>
+            )
+          }
         </List>
       }
     </Box>

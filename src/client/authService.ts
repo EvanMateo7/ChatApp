@@ -10,16 +10,16 @@ export function useCurrentUser() {
 
   let subscribeUserDoc = (firebaseUID: string, once: boolean = false) => {
     const unsubscribeUserDoc = firestore.collection("users")
-        .doc(firebaseUID)
-        .onSnapshot((snapshot) => {
-          if (snapshot.exists) {
-            setUser(() => {
-              once && unsubscribeUserDoc();
-              return snapshot.data() as User;
-            });
-          }
-        });
-    
+      .doc(firebaseUID)
+      .onSnapshot((snapshot) => {
+        if (snapshot.exists) {
+          setUser(() => {
+            once && unsubscribeUserDoc();
+            return snapshot.data() as User;
+          });
+        }
+      });
+
     return unsubscribeUserDoc;
   }
 

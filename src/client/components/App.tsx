@@ -86,7 +86,8 @@ export const App = (props: any) => {
       <Box display="flex" flexDirection="column" height="100%" className={isDrawerOpen ? classes.shifted : undefined}>
         <AppBar
           position="static"
-          className={classes.appBar}>
+          className={classes.appBar}
+        >
           <Toolbar>
             <Button color="inherit" onClick={toggleRoomList}>Rooms</Button>
             <Typography variant="h6" align="center" className={classes.title}>
